@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://127.0.0.1:5000/api",
+  baseURL: "https://jeevansetu-2.onrender.com/api",
 });
 
 // Automatically attach JWT token to every protected request
