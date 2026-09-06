@@ -1,5 +1,8 @@
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import (
+    jwt_required,
+    get_jwt_identity
+)
 
 from models import (
     Worker,
@@ -11,11 +14,35 @@ from models import (
 
 from database import db
 
+import re
+
 
 citizen_bp = Blueprint(
     "citizen",
     __name__
 )
+
+
+# =========================================================
+# PHONE VALIDATION
+# =========================================================
+
+def validate_phone(phone):
+
+    if phone is None:
+        return True
+
+    phone = str(phone).strip()
+
+    if phone == "":
+        return True
+
+    return bool(
+        re.fullmatch(
+            r"\d{10}",
+            phone
+        )
+    )
 
 
 # =========================================================
@@ -30,7 +57,10 @@ def get_current_citizen():
             get_jwt_identity()
         )
 
-    except (TypeError, ValueError):
+    except (
+        TypeError,
+        ValueError
+    ):
 
         return None
 
@@ -55,6 +85,7 @@ def get_current_citizen():
     "/workers",
     methods=["GET"]
 )
+@jwt_required()
 def get_workers():
 
     workers = Worker.query.all()
@@ -105,7 +136,10 @@ def get_workers():
         })
 
     return jsonify({
-        "workers": result
+
+        "workers":
+            result
+
     }), 200
 
 
@@ -125,9 +159,12 @@ def create_job():
     if not citizen:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Citizen authentication required"
+
         }), 403
 
     data = request.get_json()
@@ -135,9 +172,12 @@ def create_job():
     if not data:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Request body is required"
+
         }), 400
 
     worker_id = data.get(
@@ -159,36 +199,64 @@ def create_job():
         ""
     ).strip()
 
+    # -----------------------------------------------------
+    # OPTIONAL GPS
+    # -----------------------------------------------------
+
+    latitude = data.get(
+        "latitude"
+    )
+
+    longitude = data.get(
+        "longitude"
+    )
+
+    location_accuracy = data.get(
+        "location_accuracy"
+    )
+
     if not worker_id:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Worker is required"
+
         }), 400
 
     if not service:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Service is required"
+
         }), 400
 
     if not description:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Problem description is required"
+
         }), 400
 
     if not location:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Location is required"
+
         }), 400
 
     worker = Worker.query.get(
@@ -198,25 +266,34 @@ def create_job():
     if not worker:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Worker not found"
+
         }), 404
 
     if not worker.verified:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "This worker is not verified"
+
         }), 400
 
     if not worker.available:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "This worker is currently unavailable"
+
         }), 400
 
     job = Job(
@@ -236,17 +313,30 @@ def create_job():
         location=
             location,
 
+        latitude=
+            latitude,
+
+        longitude=
+            longitude,
+
+        location_accuracy=
+            location_accuracy,
+
         status=
             "requested"
+
     )
 
-    db.session.add(job)
+    db.session.add(
+        job
+    )
 
     db.session.commit()
 
     return jsonify({
 
-        "success": True,
+        "success":
+            True,
 
         "message":
             "Worker request sent successfully",
@@ -265,11 +355,21 @@ def create_job():
             "location":
                 job.location,
 
+            "latitude":
+                job.latitude,
+
+            "longitude":
+                job.longitude,
+
+            "location_accuracy":
+                job.location_accuracy,
+
             "status":
                 job.status,
 
             "worker_id":
                 job.worker_id
+
         }
 
     }), 201
@@ -291,15 +391,23 @@ def get_citizen_jobs():
     if not citizen:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Citizen authentication required"
+
         }), 403
 
     jobs = Job.query.filter_by(
-        citizen_id=citizen.id
+
+        citizen_id=
+            citizen.id
+
     ).order_by(
+
         Job.created_at.desc()
+
     ).all()
 
     result = []
@@ -307,6 +415,7 @@ def get_citizen_jobs():
     for job in jobs:
 
         worker = None
+
         worker_user = None
 
         if job.worker_id:
@@ -322,8 +431,30 @@ def get_citizen_jobs():
                 )
 
         review = Review.query.filter_by(
-            job_id=job.id
+
+            job_id=
+                job.id
+
         ).first()
+
+        # -------------------------------------------------
+        # PHONE ONLY AFTER ACCEPTED
+        # -------------------------------------------------
+
+        worker_phone = None
+
+        if (
+            worker_user
+            and job.status in [
+                "accepted",
+                "in_progress",
+                "completed"
+            ]
+        ):
+
+            worker_phone = (
+                worker_user.phone
+            )
 
         result.append({
 
@@ -339,6 +470,15 @@ def get_citizen_jobs():
             "location":
                 job.location,
 
+            "latitude":
+                job.latitude,
+
+            "longitude":
+                job.longitude,
+
+            "location_accuracy":
+                job.location_accuracy,
+
             "status":
                 job.status,
 
@@ -346,40 +486,62 @@ def get_citizen_jobs():
                 job.worker_id,
 
             "worker_name": (
+
                 worker_user.name
+
                 if worker_user
+
                 else "Not Assigned"
+
             ),
 
             "worker_skill": (
+
                 worker.skill
+
                 if worker
+
                 else ""
+
             ),
 
+            "worker_phone":
+                worker_phone,
+
             "created_at": (
+
                 job.created_at.strftime(
                     "%Y-%m-%d %H:%M"
                 )
+
             ),
 
             "has_review": (
+
                 True
+
                 if review
+
                 else False
+
             ),
 
             "review_rating": (
+
                 review.rating
+
                 if review
+
                 else None
+
             )
 
         })
 
     return jsonify({
 
-        "success": True,
+        "success":
+            True,
 
         "jobs":
             result
@@ -403,9 +565,12 @@ def create_review():
     if not citizen:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Citizen authentication required"
+
         }), 403
 
     data = request.get_json()
@@ -413,9 +578,12 @@ def create_review():
     if not data:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Request body is required"
+
         }), 400
 
     job_id = data.get(
@@ -434,37 +602,54 @@ def create_review():
     if not job_id:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Job ID is required"
+
         }), 400
 
     if rating is None:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Rating is required"
+
         }), 400
 
     try:
 
-        rating = int(rating)
+        rating = int(
+            rating
+        )
 
-    except (TypeError, ValueError):
+    except (
+        TypeError,
+        ValueError
+    ):
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Rating must be a number"
+
         }), 400
 
     if rating < 1 or rating > 5:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Rating must be between 1 and 5"
+
         }), 400
 
     job = Job.query.get(
@@ -474,45 +659,63 @@ def create_review():
     if not job:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Job not found"
+
         }), 404
 
     if job.citizen_id != citizen.id:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "You cannot review this job"
+
         }), 403
 
     if job.status != "completed":
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "You can review only completed jobs"
+
         }), 400
 
     if not job.worker_id:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "No worker is assigned to this job"
+
         }), 400
 
     existing_review = Review.query.filter_by(
-        job_id=job.id
+
+        job_id=
+            job.id
+
     ).first()
 
     if existing_review:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "You have already reviewed this job"
+
         }), 400
 
     worker = Worker.query.get(
@@ -522,9 +725,12 @@ def create_review():
     if not worker:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Worker not found"
+
         }), 404
 
     review = Review(
@@ -543,31 +749,44 @@ def create_review():
 
         feedback=
             feedback
+
     )
 
-    db.session.add(review)
+    db.session.add(
+        review
+    )
 
     db.session.flush()
 
     reviews = Review.query.filter_by(
-        worker_id=worker.id
+
+        worker_id=
+            worker.id
+
     ).all()
 
     total_rating = sum(
+
         review_item.rating
+
         for review_item in reviews
+
     )
 
     worker.rating = round(
+
         total_rating / len(reviews),
+
         2
+
     )
 
     db.session.commit()
 
     return jsonify({
 
-        "success": True,
+        "success":
+            True,
 
         "message":
             "Thank you for your feedback!",
@@ -585,6 +804,7 @@ def create_review():
 
             "feedback":
                 review.feedback
+
         },
 
         "worker_rating":
@@ -609,9 +829,12 @@ def create_complaint():
     if not citizen:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Citizen authentication required"
+
         }), 403
 
     data = request.get_json() or {}
@@ -638,17 +861,23 @@ def create_complaint():
     if not subject:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Complaint subject is required"
+
         }), 400
 
     if not description:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Complaint description is required"
+
         }), 400
 
     if priority not in [
@@ -665,27 +894,43 @@ def create_complaint():
 
         try:
 
-            job_id = int(job_id)
+            job_id = int(
+                job_id
+            )
 
-        except (TypeError, ValueError):
+        except (
+            TypeError,
+            ValueError
+        ):
 
             return jsonify({
+
                 "success": False,
+
                 "message":
                     "Invalid job ID"
+
             }), 400
 
         job = Job.query.filter_by(
-            id=job_id,
-            citizen_id=citizen.id
+
+            id=
+                job_id,
+
+            citizen_id=
+                citizen.id
+
         ).first()
 
         if not job:
 
             return jsonify({
+
                 "success": False,
+
                 "message":
                     "Job not found"
+
             }), 404
 
     complaint = Complaint(
@@ -710,6 +955,7 @@ def create_complaint():
 
         status=
             "pending"
+
     )
 
     db.session.add(
@@ -720,7 +966,8 @@ def create_complaint():
 
     return jsonify({
 
-        "success": True,
+        "success":
+            True,
 
         "message":
             "Complaint submitted successfully",
@@ -744,6 +991,7 @@ def create_complaint():
 
             "created_at":
                 complaint.created_at.isoformat()
+
         }
 
     }), 201
@@ -765,15 +1013,23 @@ def get_citizen_complaints():
     if not citizen:
 
         return jsonify({
+
             "success": False,
+
             "message":
                 "Citizen authentication required"
+
         }), 403
 
     complaints = Complaint.query.filter_by(
-        citizen_id=citizen.id
+
+        citizen_id=
+            citizen.id
+
     ).order_by(
+
         Complaint.created_at.desc()
+
     ).all()
 
     result = []
@@ -804,22 +1060,31 @@ def get_citizen_complaints():
                 complaint.resolution_note or "",
 
             "created_at": (
+
                 complaint.created_at.isoformat()
+
                 if complaint.created_at
+
                 else None
+
             ),
 
             "updated_at": (
+
                 complaint.updated_at.isoformat()
+
                 if complaint.updated_at
+
                 else None
+
             )
 
         })
 
     return jsonify({
 
-        "success": True,
+        "success":
+            True,
 
         "complaints":
             result

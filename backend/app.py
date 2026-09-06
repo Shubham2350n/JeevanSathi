@@ -138,7 +138,10 @@ def add_column_if_missing(
 
     tables = inspector.get_table_names()
 
+    # ------------------------------------------------------
     # Table does not exist
+    # ------------------------------------------------------
+
     if table_name not in tables:
 
         print(
@@ -148,6 +151,10 @@ def add_column_if_missing(
 
         return False
 
+    # ------------------------------------------------------
+    # Get existing columns
+    # ------------------------------------------------------
+
     existing_columns = {
         column["name"]
         for column in inspector.get_columns(
@@ -155,7 +162,10 @@ def add_column_if_missing(
         )
     }
 
+    # ------------------------------------------------------
     # Column already exists
+    # ------------------------------------------------------
+
     if column_name in existing_columns:
 
         print(
@@ -165,14 +175,15 @@ def add_column_if_missing(
 
         return False
 
+    # ------------------------------------------------------
     # Add missing column
+    # ------------------------------------------------------
+
     print(
         f"[DATABASE] Adding missing column: "
         f"{table_name}.{column_name}"
     )
 
-    # Table/column names below are hard-coded by us,
-    # not supplied by users, so this is safe here.
     db.session.execute(
         text(
             f"ALTER TABLE {table_name} "
@@ -225,10 +236,25 @@ def repair_database_schema():
     )
 
 
-    # ------------------------------------------------------
+    # ======================================================
     # STEP 2
+    # USERS TABLE
+    # ======================================================
+
+    print("")
+    print("[DATABASE] Checking users table...")
+
+    add_column_if_missing(
+        "users",
+        "phone",
+        "VARCHAR(10)"
+    )
+
+
+    # ======================================================
+    # STEP 3
     # JOBS TABLE
-    # ------------------------------------------------------
+    # ======================================================
 
     print("")
     print("[DATABASE] Checking jobs table...")
@@ -258,10 +284,10 @@ def repair_database_schema():
     )
 
 
-    # ------------------------------------------------------
-    # STEP 3
+    # ======================================================
+    # STEP 4
     # WORKERS TABLE
-    # ------------------------------------------------------
+    # ======================================================
 
     print("")
     print("[DATABASE] Checking workers table...")
@@ -273,10 +299,10 @@ def repair_database_schema():
     )
 
 
-    # ------------------------------------------------------
-    # STEP 4
+    # ======================================================
+    # STEP 5
     # COMPLAINTS TABLE
-    # ------------------------------------------------------
+    # ======================================================
 
     print("")
     print("[DATABASE] Checking complaints table...")
@@ -306,18 +332,18 @@ def repair_database_schema():
     )
 
 
-    # ------------------------------------------------------
-    # STEP 5
+    # ======================================================
+    # STEP 6
     # COMMIT ALL CHANGES
-    # ------------------------------------------------------
+    # ======================================================
 
     db.session.commit()
 
 
-    # ------------------------------------------------------
-    # STEP 6
+    # ======================================================
+    # STEP 7
     # FINAL DATABASE CHECK
-    # ------------------------------------------------------
+    # ======================================================
 
     inspector = inspect(db.engine)
 
@@ -331,12 +357,43 @@ def repair_database_schema():
     )
 
     for table in tables:
+
         print(
             f"  - {table}"
         )
 
 
-    # Check jobs specifically
+    # ------------------------------------------------------
+    # Check USERS table
+    # ------------------------------------------------------
+
+    if "users" in tables:
+
+        users_columns = {
+            column["name"]
+            for column in inspector.get_columns(
+                "users"
+            )
+        }
+
+        if "phone" in users_columns:
+
+            print(
+                "[DATABASE] VERIFIED: users.phone"
+            )
+
+        else:
+
+            print(
+                "[DATABASE] WARNING: "
+                "users.phone is still missing!"
+            )
+
+
+    # ------------------------------------------------------
+    # Check JOBS table
+    # ------------------------------------------------------
+
     if "jobs" in tables:
 
         jobs_columns = {
@@ -369,12 +426,15 @@ def repair_database_schema():
                 )
 
 
+    # ------------------------------------------------------
+    # Completed
+    # ------------------------------------------------------
+
     print("")
     print("=" * 60)
     print("[DATABASE] SAFE SCHEMA CHECK COMPLETED")
     print("=" * 60)
     print("")
-
 
 
 # ==========================================================
@@ -448,7 +508,6 @@ def database_test():
     complaints = Complaint.query.count()
 
     locations = JobLocation.query.count()
-
 
     return jsonify({
 

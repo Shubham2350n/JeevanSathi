@@ -15,35 +15,53 @@ from models import (
     Complaint
 )
 
+
 worker_bp = Blueprint(
     "worker",
     __name__
 )
 
 
+# =========================================================
+# GET CURRENT WORKER
+# =========================================================
+
 def get_current_worker():
 
-    user_id = int(
-        get_jwt_identity()
-    )
+    try:
+
+        user_id = int(
+            get_jwt_identity()
+        )
+
+    except (
+        TypeError,
+        ValueError
+    ):
+
+        return None, None
 
     user = User.query.get(
         user_id
     )
 
     if not user:
+
         return None, None
 
     worker = Worker.query.filter_by(
-        user_id=user.id
+
+        user_id=
+            user.id
+
     ).first()
 
     return user, worker
 
 
-# ==========================================
+# =========================================================
 # WORKER PROFILE
-# ==========================================
+# =========================================================
 
 @worker_bp.route(
     "/profile",
@@ -57,41 +75,57 @@ def get_profile():
     if not user or not worker:
 
         return jsonify({
-            "message": "Worker profile not found"
+
+            "message":
+                "Worker profile not found"
+
         }), 404
 
     return jsonify({
 
         "worker": {
 
-            "id": worker.id,
+            "id":
+                worker.id,
 
-            "name": user.name,
+            "name":
+                user.name,
 
-            "email": user.email,
+            "email":
+                user.email,
 
-            "skill": worker.skill,
+            "phone":
+                user.phone,
 
-            "experience": worker.experience,
+            "skill":
+                worker.skill,
 
-            "rating": worker.rating,
+            "experience":
+                worker.experience,
 
-            "location": worker.location,
+            "rating":
+                worker.rating,
 
-            "verified": worker.verified,
+            "location":
+                worker.location,
 
-            "available": worker.available,
+            "verified":
+                worker.verified,
 
-            "certifications": worker.certifications
+            "available":
+                worker.available,
+
+            "certifications":
+                worker.certifications
 
         }
 
     }), 200
 
 
-# ==========================================
+# =========================================================
 # WORKER RATINGS / REVIEWS
-# ==========================================
+# =========================================================
 
 @worker_bp.route(
     "/reviews",
@@ -105,13 +139,21 @@ def get_worker_reviews():
     if not user or not worker:
 
         return jsonify({
-            "message": "Worker not found"
+
+            "message":
+                "Worker not found"
+
         }), 404
 
     reviews = Review.query.filter_by(
-        worker_id=worker.id
+
+        worker_id=
+            worker.id
+
     ).order_by(
+
         Review.created_at.desc()
+
     ).all()
 
     result = []
@@ -128,25 +170,40 @@ def get_worker_reviews():
 
         result.append({
 
-            "id": review.id,
+            "id":
+                review.id,
 
-            "job_id": review.job_id,
+            "job_id":
+                review.job_id,
 
-            "citizen_id": review.citizen_id,
+            "citizen_id":
+                review.citizen_id,
 
-            "citizen_name":
+            "citizen_name": (
+
                 citizen.name
+
                 if citizen
-                else "Citizen",
 
-            "rating": review.rating,
+                else "Citizen"
 
-            "feedback": review.feedback,
+            ),
 
-            "service":
+            "rating":
+                review.rating,
+
+            "feedback":
+                review.feedback,
+
+            "service": (
+
                 job.service
+
                 if job
-                else "Service",
+
+                else "Service"
+
+            ),
 
             "created_at":
                 review.created_at.isoformat()
@@ -156,11 +213,16 @@ def get_worker_reviews():
     if reviews:
 
         average_rating = round(
+
             sum(
                 review.rating
                 for review in reviews
-            ) / len(reviews),
+            )
+            /
+            len(reviews),
+
             1
+
         )
 
     else:
@@ -169,18 +231,21 @@ def get_worker_reviews():
 
     return jsonify({
 
-        "reviews": result,
+        "reviews":
+            result,
 
-        "average_rating": average_rating,
+        "average_rating":
+            average_rating,
 
-        "total_reviews": len(reviews)
+        "total_reviews":
+            len(reviews)
 
     }), 200
 
 
-# ==========================================
+# =========================================================
 # WORKER COMPLAINTS
-# ==========================================
+# =========================================================
 
 @worker_bp.route(
     "/complaints",
@@ -194,28 +259,45 @@ def get_worker_complaints():
     if not user or not worker:
 
         return jsonify({
-            "message": "Worker not found"
+
+            "message":
+                "Worker not found"
+
         }), 404
 
     jobs = Job.query.filter_by(
-        worker_id=worker.id
+
+        worker_id=
+            worker.id
+
     ).all()
 
     job_ids = [
+
         job.id
+
         for job in jobs
+
     ]
 
     if not job_ids:
 
         return jsonify({
+
             "complaints": []
+
         }), 200
 
     complaints = Complaint.query.filter(
-        Complaint.job_id.in_(job_ids)
+
+        Complaint.job_id.in_(
+            job_ids
+        )
+
     ).order_by(
+
         Complaint.created_at.desc()
+
     ).all()
 
     result = []
@@ -226,23 +308,38 @@ def get_worker_complaints():
             complaint.citizen_id
         )
 
-        job = Job.query.get(
-            complaint.job_id
-        ) if complaint.job_id else None
+        job = (
+
+            Job.query.get(
+                complaint.job_id
+            )
+
+            if complaint.job_id
+
+            else None
+
+        )
 
         result.append({
 
-            "id": complaint.id,
+            "id":
+                complaint.id,
 
-            "job_id": complaint.job_id,
+            "job_id":
+                complaint.job_id,
 
             "citizen_id":
                 complaint.citizen_id,
 
-            "citizen_name":
+            "citizen_name": (
+
                 citizen.name
+
                 if citizen
-                else "Citizen",
+
+                else "Citizen"
+
+            ),
 
             "subject":
                 complaint.subject,
@@ -259,31 +356,42 @@ def get_worker_complaints():
             "resolution_note":
                 complaint.resolution_note,
 
-            "service":
+            "service": (
+
                 job.service
+
                 if job
-                else "Service",
+
+                else "Service"
+
+            ),
 
             "created_at":
                 complaint.created_at.isoformat(),
 
-            "updated_at":
+            "updated_at": (
+
                 complaint.updated_at.isoformat()
+
                 if complaint.updated_at
+
                 else None
+
+            )
 
         })
 
     return jsonify({
 
-        "complaints": result
+        "complaints":
+            result
 
     }), 200
 
 
-# ==========================================
+# =========================================================
 # UPDATE AVAILABILITY
-# ==========================================
+# =========================================================
 
 @worker_bp.route(
     "/availability",
@@ -297,7 +405,10 @@ def update_availability():
     if not user or not worker:
 
         return jsonify({
-            "message": "Worker not found"
+
+            "message":
+                "Worker not found"
+
         }), 404
 
     data = request.get_json()
@@ -305,7 +416,10 @@ def update_availability():
     if not data:
 
         return jsonify({
-            "message": "Request body is required"
+
+            "message":
+                "Request body is required"
+
         }), 400
 
     available = data.get(
@@ -315,7 +429,10 @@ def update_availability():
     if available is None:
 
         return jsonify({
-            "message": "Availability is required"
+
+            "message":
+                "Availability is required"
+
         }), 400
 
     worker.available = bool(
@@ -326,16 +443,18 @@ def update_availability():
 
     return jsonify({
 
-        "message": "Availability updated",
+        "message":
+            "Availability updated",
 
-        "available": worker.available
+        "available":
+            worker.available
 
     }), 200
 
 
-# ==========================================
+# =========================================================
 # NEW JOB REQUESTS
-# ==========================================
+# =========================================================
 
 @worker_bp.route(
     "/jobs/requests",
@@ -349,14 +468,24 @@ def get_job_requests():
     if not user or not worker:
 
         return jsonify({
-            "message": "Worker not found"
+
+            "message":
+                "Worker not found"
+
         }), 404
 
     jobs = Job.query.filter_by(
-        worker_id=worker.id,
-        status="requested"
+
+        worker_id=
+            worker.id,
+
+        status=
+            "requested"
+
     ).order_by(
+
         Job.created_at.desc()
+
     ).all()
 
     result = []
@@ -367,22 +496,45 @@ def get_job_requests():
             job.citizen_id
         )
 
+        # -------------------------------------------------
+        # PHONE HIDDEN WHILE REQUEST IS PENDING
+        # -------------------------------------------------
+
         result.append({
 
-            "id": job.id,
+            "id":
+                job.id,
 
-            "service": job.service,
+            "service":
+                job.service,
 
-            "description": job.description,
+            "description":
+                job.description,
 
-            "location": job.location,
+            "location":
+                job.location,
 
-            "status": job.status,
+            "latitude":
+                job.latitude,
 
-            "citizen_name":
+            "longitude":
+                job.longitude,
+
+            "location_accuracy":
+                job.location_accuracy,
+
+            "status":
+                job.status,
+
+            "citizen_name": (
+
                 citizen.name
+
                 if citizen
-                else "Citizen",
+
+                else "Citizen"
+
+            ),
 
             "created_at":
                 job.created_at.isoformat()
@@ -390,13 +542,16 @@ def get_job_requests():
         })
 
     return jsonify({
-        "jobs": result
+
+        "jobs":
+            result
+
     }), 200
 
 
-# ==========================================
+# =========================================================
 # ACTIVE JOBS
-# ==========================================
+# =========================================================
 
 @worker_bp.route(
     "/jobs/active",
@@ -410,17 +565,25 @@ def get_active_jobs():
     if not user or not worker:
 
         return jsonify({
-            "message": "Worker not found"
+
+            "message":
+                "Worker not found"
+
         }), 404
 
     jobs = Job.query.filter(
+
         Job.worker_id == worker.id,
+
         Job.status.in_([
             "accepted",
             "in_progress"
         ])
+
     ).order_by(
+
         Job.created_at.desc()
+
     ).all()
 
     result = []
@@ -431,37 +594,72 @@ def get_active_jobs():
             job.citizen_id
         )
 
+        # -------------------------------------------------
+        # PHONE AVAILABLE AFTER ACCEPT
+        # -------------------------------------------------
+
+        citizen_phone = (
+
+            citizen.phone
+
+            if citizen and citizen.phone
+
+            else None
+
+        )
+
         result.append({
 
-            "id": job.id,
+            "id":
+                job.id,
 
-            "service": job.service,
+            "service":
+                job.service,
 
-            "description": job.description,
+            "description":
+                job.description,
 
-            "location": job.location,
+            "location":
+                job.location,
 
-            "status": job.status,
+            "latitude":
+                job.latitude,
 
-            "citizen_name":
+            "longitude":
+                job.longitude,
+
+            "location_accuracy":
+                job.location_accuracy,
+
+            "status":
+                job.status,
+
+            "citizen_name": (
+
                 citizen.name
+
                 if citizen
+
                 else "Citizen"
+
+            ),
+
+            "citizen_phone":
+                citizen_phone
 
         })
 
     return jsonify({
-        "jobs": result
+
+        "jobs":
+            result
+
     }), 200
 
 
-# ==========================================
+# =========================================================
 # COMPLETED JOBS
-# ==========================================
-
-# ==========================================
-# COMPLETED JOBS
-# ==========================================
+# =========================================================
 
 @worker_bp.route(
     "/jobs/completed",
@@ -473,62 +671,125 @@ def get_completed_jobs():
     user, worker = get_current_worker()
 
     if not user or not worker:
+
         return jsonify({
-            "message": "Worker not found"
+
+            "message":
+                "Worker not found"
+
         }), 404
 
     jobs = Job.query.filter_by(
-        worker_id=worker.id,
-        status="completed"
+
+        worker_id=
+            worker.id,
+
+        status=
+            "completed"
+
     ).order_by(
+
         Job.created_at.desc()
+
     ).all()
 
     result = []
 
     for job in jobs:
 
-        # Find review given by citizen for this job
         review = Review.query.filter_by(
-            job_id=job.id,
-            worker_id=worker.id
+
+            job_id=
+                job.id,
+
+            worker_id=
+                worker.id
+
         ).first()
+
+        citizen = User.query.get(
+            job.citizen_id
+        )
 
         result.append({
 
-            "id": job.id,
+            "id":
+                job.id,
 
-            "service": job.service,
+            "service":
+                job.service,
 
-            "description": job.description,
+            "description":
+                job.description,
 
-            "location": job.location,
+            "location":
+                job.location,
 
-            "status": job.status,
+            "latitude":
+                job.latitude,
 
-            # Citizen rating
-            "rating": (
-                review.rating
-                if review
-                else None
+            "longitude":
+                job.longitude,
+
+            "location_accuracy":
+                job.location_accuracy,
+
+            "status":
+                job.status,
+
+            "citizen_name": (
+
+                citizen.name
+
+                if citizen
+
+                else "Citizen"
+
             ),
 
-            # Citizen feedback
-            "feedback": (
-                review.feedback
-                if review
+            "citizen_phone": (
+
+                citizen.phone
+
+                if citizen and citizen.phone
+
                 else None
+
+            ),
+
+            "rating": (
+
+                review.rating
+
+                if review
+
+                else None
+
+            ),
+
+            "feedback": (
+
+                review.feedback
+
+                if review
+
+                else None
+
             )
 
         })
 
     return jsonify({
-        "jobs": result
+
+        "jobs":
+            result
+
     }), 200
 
-# ==========================================
+
+# =========================================================
 # ACCEPT JOB
-# ==========================================
+# =========================================================
 
 @worker_bp.route(
     "/jobs/<int:job_id>/accept",
@@ -542,7 +803,10 @@ def accept_job(job_id):
     if not user or not worker:
 
         return jsonify({
-            "message": "Worker not found"
+
+            "message":
+                "Worker not found"
+
         }), 404
 
     job = Job.query.get(
@@ -552,21 +816,28 @@ def accept_job(job_id):
     if not job:
 
         return jsonify({
-            "message": "Job not found"
+
+            "message":
+                "Job not found"
+
         }), 404
 
     if job.worker_id != worker.id:
 
         return jsonify({
+
             "message":
                 "This job is not assigned to you"
+
         }), 403
 
     if job.status != "requested":
 
         return jsonify({
+
             "message":
                 "Job is no longer available"
+
         }), 400
 
     job.status = "accepted"
@@ -575,6 +846,14 @@ def accept_job(job_id):
 
     db.session.commit()
 
+    # -----------------------------------------------------
+    # CITIZEN CONTACT IS NOW ALLOWED
+    # -----------------------------------------------------
+
+    citizen = User.query.get(
+        job.citizen_id
+    )
+
     return jsonify({
 
         "message":
@@ -582,18 +861,40 @@ def accept_job(job_id):
 
         "job": {
 
-            "id": job.id,
+            "id":
+                job.id,
 
-            "status": job.status
+            "status":
+                job.status,
+
+            "citizen_phone": (
+
+                citizen.phone
+
+                if citizen and citizen.phone
+
+                else None
+
+            ),
+
+            "worker_phone": (
+
+                user.phone
+
+                if user.phone
+
+                else None
+
+            )
 
         }
 
     }), 200
 
 
-# ==========================================
+# =========================================================
 # START JOB
-# ==========================================
+# =========================================================
 
 @worker_bp.route(
     "/jobs/<int:job_id>/start",
@@ -607,7 +908,10 @@ def start_job(job_id):
     if not user or not worker:
 
         return jsonify({
-            "message": "Worker not found"
+
+            "message":
+                "Worker not found"
+
         }), 404
 
     job = Job.query.get(
@@ -617,26 +921,37 @@ def start_job(job_id):
     if not job:
 
         return jsonify({
-            "message": "Job not found"
+
+            "message":
+                "Job not found"
+
         }), 404
 
     if job.worker_id != worker.id:
 
         return jsonify({
+
             "message":
                 "This job is not assigned to you"
+
         }), 403
 
     if job.status != "accepted":
 
         return jsonify({
+
             "message":
                 "Only accepted jobs can be started"
+
         }), 400
 
     job.status = "in_progress"
 
     db.session.commit()
+
+    citizen = User.query.get(
+        job.citizen_id
+    )
 
     return jsonify({
 
@@ -645,18 +960,40 @@ def start_job(job_id):
 
         "job": {
 
-            "id": job.id,
+            "id":
+                job.id,
 
-            "status": job.status
+            "status":
+                job.status,
+
+            "citizen_phone": (
+
+                citizen.phone
+
+                if citizen and citizen.phone
+
+                else None
+
+            ),
+
+            "worker_phone": (
+
+                user.phone
+
+                if user.phone
+
+                else None
+
+            )
 
         }
 
     }), 200
 
 
-# ==========================================
+# =========================================================
 # REJECT JOB
-# ==========================================
+# =========================================================
 
 @worker_bp.route(
     "/jobs/<int:job_id>/reject",
@@ -670,7 +1007,10 @@ def reject_job(job_id):
     if not user or not worker:
 
         return jsonify({
-            "message": "Worker not found"
+
+            "message":
+                "Worker not found"
+
         }), 404
 
     job = Job.query.get(
@@ -680,21 +1020,28 @@ def reject_job(job_id):
     if not job:
 
         return jsonify({
-            "message": "Job not found"
+
+            "message":
+                "Job not found"
+
         }), 404
 
     if job.worker_id != worker.id:
 
         return jsonify({
+
             "message":
                 "This job is not assigned to you"
+
         }), 403
 
     if job.status != "requested":
 
         return jsonify({
+
             "message":
                 "Job is no longer available"
+
         }), 400
 
     job.status = "rejected"
@@ -709,9 +1056,9 @@ def reject_job(job_id):
     }), 200
 
 
-# ==========================================
+# =========================================================
 # COMPLETE JOB
-# ==========================================
+# =========================================================
 
 @worker_bp.route(
     "/jobs/<int:job_id>/complete",
@@ -725,7 +1072,10 @@ def complete_job(job_id):
     if not user or not worker:
 
         return jsonify({
-            "message": "Worker not found"
+
+            "message":
+                "Worker not found"
+
         }), 404
 
     job = Job.query.get(
@@ -735,21 +1085,28 @@ def complete_job(job_id):
     if not job:
 
         return jsonify({
-            "message": "Job not found"
+
+            "message":
+                "Job not found"
+
         }), 404
 
     if job.worker_id != worker.id:
 
         return jsonify({
+
             "message":
                 "This job is not assigned to you"
+
         }), 403
 
     if job.status != "in_progress":
 
         return jsonify({
+
             "message":
                 "Start the job before completing it"
+
         }), 400
 
     job.status = "completed"
@@ -758,6 +1115,10 @@ def complete_job(job_id):
 
     db.session.commit()
 
+    citizen = User.query.get(
+        job.citizen_id
+    )
+
     return jsonify({
 
         "message":
@@ -765,9 +1126,21 @@ def complete_job(job_id):
 
         "job": {
 
-            "id": job.id,
+            "id":
+                job.id,
 
-            "status": job.status
+            "status":
+                job.status,
+
+            "citizen_phone": (
+
+                citizen.phone
+
+                if citizen and citizen.phone
+
+                else None
+
+            )
 
         }
 

@@ -779,20 +779,7 @@ function JeevanSathi({
         return;
 
       }
-
-
-      if (!coordinates) {
-
-        setError(
-          "Please use GPS or choose your location on the map first."
-        );
-
-        return;
-
-      }
-
-
-      setWorkerLoading(true);
+setWorkerLoading(true);
 
       setError("");
 
@@ -869,20 +856,7 @@ function JeevanSathi({
         return;
 
       }
-
-
-      if (!coordinates) {
-
-        setError(
-          "Please choose your exact location using GPS or the map."
-        );
-
-        return;
-
-      }
-
-
-      setBookingWorker(
+setBookingWorker(
         worker.worker_id
       );
 
@@ -909,15 +883,15 @@ function JeevanSathi({
 
               location:
                 location.trim(),
-
-              latitude:
-                coordinates.latitude,
-
-              longitude:
-                coordinates.longitude,
-
-              location_accuracy:
-                coordinates.accuracy
+              ...(coordinates ? {
+                latitude: coordinates.latitude,
+                longitude: coordinates.longitude,
+                location_accuracy: coordinates.accuracy
+              } : {}),
+urgency:
+                result?.urgency ||
+                result?.priority ||
+                "Normal"
 
             }
           );

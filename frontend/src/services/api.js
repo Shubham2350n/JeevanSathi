@@ -1,29 +1,55 @@
 import axios from "axios";
 
 
+/* =========================================================
+   API URL
+========================================================= */
+
+// Local development:
+// http://localhost:5173  -> local backend
+//
+// Netlify production:
+// https://your-site.netlify.app -> Render backend
+
+const API_BASE_URL =
+  import.meta.env.PROD
+    ? "https://jeevansetu-2.onrender.com/api"
+    : "http://127.0.0.1:5000/api";
+
+
 const API = axios.create({
-  baseURL: "https://jeevansathi-backend.onrender.com/api",
+  baseURL: API_BASE_URL,
 });
 
 
 /* =========================================================
-   JWT AUTHORIZATION
+   JWT
 ========================================================= */
 
 API.interceptors.request.use(
+
   (config) => {
-    const token = localStorage.getItem("token");
+
+    const token =
+      localStorage.getItem("token");
 
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+
+      config.headers.Authorization =
+        `Bearer ${token}`;
+
     }
 
     return config;
+
   },
 
   (error) => {
+
     return Promise.reject(error);
+
   }
+
 );
 
 
@@ -31,64 +57,80 @@ API.interceptors.request.use(
    AUTH
 ========================================================= */
 
-export const registerUser = async (data) => {
-  const response = await API.post(
-    "/auth/register",
-    data
-  );
+export const registerUser =
+  async (data) => {
 
-  return response.data;
-};
+    const response =
+      await API.post(
+        "/auth/register",
+        data
+      );
+
+    return response.data;
+
+  };
 
 
-export const loginUser = async (data) => {
-  const response = await API.post(
-    "/auth/login",
-    data
-  );
+export const loginUser =
+  async (data) => {
 
-  return response.data;
-};
+    const response =
+      await API.post(
+        "/auth/login",
+        data
+      );
+
+    return response.data;
+
+  };
 
 
 /* =========================================================
    WORKERS
 ========================================================= */
 
-export const getWorkers = async () => {
-  const response = await API.get(
-    "/citizen/workers"
-  );
+export const getWorkers =
+  async () => {
 
-  return response.data;
-};
+    const response =
+      await API.get(
+        "/citizen/workers"
+      );
+
+    return response.data;
+
+  };
 
 
 /* =========================================================
    LOCATION
 ========================================================= */
 
-export const updateMyLocation = async (data) => {
-  const response = await API.post(
-    "/location/update",
-    data
-  );
+export const updateMyLocation =
+  async (data) => {
 
-  return response.data;
-};
+    const response =
+      await API.post(
+        "/location/update",
+        data
+      );
 
+    return response.data;
 
-export const getJobLocations = async (jobId) => {
-  const response = await API.get(
-    `/location/job/${jobId}`
-  );
-
-  return response.data;
-};
+  };
 
 
-/* =========================================================
-   DEFAULT API
-========================================================= */
+export const getJobLocations =
+  async (jobId) => {
+
+    const response =
+      await API.get(
+        `/location/job/${jobId}`
+      );
+
+    return response.data;
+
+  };
+
 
 export default API;

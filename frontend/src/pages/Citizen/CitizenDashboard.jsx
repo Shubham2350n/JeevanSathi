@@ -1,4 +1,3 @@
-import ThemeToggle from "../../components/ThemeToggle";
 import { useEffect, useState } from "react";
 
 import API, {
@@ -215,6 +214,15 @@ function CitizenDashboard() {
     loadJobs();
 
     loadComplaints();
+
+    // Automatically refresh service requests every 5 seconds.
+    // Citizen sees Requested -> Accepted -> In Progress ->
+    // Completed / Rejected / Expired without pressing Refresh.
+    const jobsTimer = setInterval(() => {
+      loadJobs();
+    }, 5000);
+
+    return () => clearInterval(jobsTimer);
 
   }, []);
 
@@ -1044,10 +1052,6 @@ function CitizenDashboard() {
 
           <div className="topbar-actions">
 
-            <div className="citizen-top-theme">
-              <ThemeToggle />
-            </div>
-
             <button
               className="top-refresh"
               onClick={() => {
@@ -1606,17 +1610,6 @@ function CitizenDashboard() {
 
                     )}
 
-                    {(job.status === "accepted" ||
-                      job.status === "in_progress") && (
-
-                      <LocationTracker
-                        jobId={job.id}
-                        myRole="citizen"
-                        enabled
-                      />
-
-                    )}
-
 
                     <div className="job-card-footer">
 
@@ -1657,6 +1650,10 @@ function CitizenDashboard() {
                         )}
 
                     </div>
+
+                    {(job.status === "accepted" || job.status === "in_progress") && (
+                      <LocationTracker jobId={job.id} myRole="citizen" enabled />
+                    )}
 
                   </div>
 

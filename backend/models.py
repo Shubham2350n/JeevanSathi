@@ -7,6 +7,7 @@ from datetime import datetime
 # =========================================================
 
 class User(db.Model):
+
     __tablename__ = "users"
 
     id = db.Column(
@@ -30,6 +31,15 @@ class User(db.Model):
         nullable=False
     )
 
+    # =====================================================
+    # PHONE NUMBER
+    # =====================================================
+
+    phone = db.Column(
+        db.String(10),
+        nullable=True
+    )
+
     role = db.Column(
         db.String(20),
         nullable=False
@@ -46,6 +56,7 @@ class User(db.Model):
 # =========================================================
 
 class Worker(db.Model):
+
     __tablename__ = "workers"
 
     id = db.Column(
@@ -100,6 +111,7 @@ class Worker(db.Model):
 # =========================================================
 
 class Job(db.Model):
+
     __tablename__ = "jobs"
 
     id = db.Column(
@@ -169,6 +181,7 @@ class Job(db.Model):
 # =========================================================
 
 class Review(db.Model):
+
     __tablename__ = "reviews"
 
     id = db.Column(
@@ -215,6 +228,7 @@ class Review(db.Model):
 # =========================================================
 
 class Complaint(db.Model):
+
     __tablename__ = "complaints"
 
     id = db.Column(
@@ -276,6 +290,7 @@ class Complaint(db.Model):
 # =========================================================
 
 class JobLocation(db.Model):
+
     __tablename__ = "job_locations"
 
     id = db.Column(
