@@ -13,7 +13,7 @@ import axios from "axios";
 
 const API_BASE_URL =
   import.meta.env.PROD
-    ? "https://jeevansetu-2.onrender.com/api"
+    ? "https://jeevansathi-backend.onrender.com/api"
     : "http://127.0.0.1:5000/api";
 
 
