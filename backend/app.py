@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
@@ -23,8 +25,21 @@ CORS(app)
 # ==========================================================
 # DATABASE CONFIG
 # ==========================================================
+#
+# LOCAL:
+#   DATABASE_URL set nahi hoga
+#   -> SQLite use hoga
+#
+# RENDER:
+#   DATABASE_URL Environment Variable mein PostgreSQL URL hoga
+#   -> PostgreSQL use hoga
+#
+# Existing local setup is NOT changed.
+#
+# ==========================================================
 
-app.config["SQLALCHEMY_DATABASE_URI"] = (
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+    "DATABASE_URL",
     "sqlite:///jeevansetu.db"
 )
 
@@ -35,7 +50,8 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # JWT CONFIG
 # ==========================================================
 
-app.config["JWT_SECRET_KEY"] = (
+app.config["JWT_SECRET_KEY"] = os.environ.get(
+    "JWT_SECRET_KEY",
     "jeevansetu-super-secret-key"
 )
 
@@ -125,7 +141,7 @@ def add_column_if_missing(
     column_type
 ):
     """
-    Safely adds a missing SQLite column.
+    Safely adds a missing database column.
 
     IMPORTANT:
     - Existing data is NOT deleted.
@@ -207,15 +223,33 @@ def repair_database_schema():
     """
     Repairs missing database columns without deleting data.
 
-    This function is specifically useful when the Render
-    SQLite database was created using an older version of
-    models.py.
+    Works with:
+    - Local SQLite
+    - Render PostgreSQL
+
+    Existing data is preserved.
     """
 
     print("")
     print("=" * 60)
     print("[DATABASE] STARTING SAFE SCHEMA CHECK")
     print("=" * 60)
+
+    # ------------------------------------------------------
+    # Show active database type
+    # ------------------------------------------------------
+
+    database_url = app.config["SQLALCHEMY_DATABASE_URI"]
+
+    if database_url.startswith("postgres"):
+        print("[DATABASE] Using PostgreSQL")
+
+    elif database_url.startswith("sqlite"):
+        print("[DATABASE] Using SQLite")
+
+    else:
+        print("[DATABASE] Using configured database")
+
 
     # ------------------------------------------------------
     # STEP 1
@@ -225,6 +259,7 @@ def repair_database_schema():
     # db.create_all() does NOT delete existing data.
     # ------------------------------------------------------
 
+    print("")
     print(
         "[DATABASE] Checking/creating missing tables..."
     )
@@ -305,7 +340,9 @@ def repair_database_schema():
     # ======================================================
 
     print("")
-    print("[DATABASE] Checking complaints table...")
+    print(
+        "[DATABASE] Checking complaints table..."
+    )
 
     add_column_if_missing(
         "complaints",
@@ -348,7 +385,9 @@ def repair_database_schema():
     inspector = inspect(db.engine)
 
     print("")
-    print("[DATABASE] Final schema verification...")
+    print(
+        "[DATABASE] Final schema verification..."
+    )
 
     tables = inspector.get_table_names()
 
@@ -432,7 +471,9 @@ def repair_database_schema():
 
     print("")
     print("=" * 60)
-    print("[DATABASE] SAFE SCHEMA CHECK COMPLETED")
+    print(
+        "[DATABASE] SAFE SCHEMA CHECK COMPLETED"
+    )
     print("=" * 60)
     print("")
 
@@ -453,7 +494,9 @@ with app.app_context():
 
         print("")
         print("=" * 60)
-        print("[DATABASE] SCHEMA REPAIR FAILED")
+        print(
+            "[DATABASE] SCHEMA REPAIR FAILED"
+        )
         print("=" * 60)
 
         print(
@@ -534,5 +577,6 @@ if __name__ == "__main__":
 
     app.run(
         debug=True,
+        host="0.0.0.0",
         port=5000
     )
