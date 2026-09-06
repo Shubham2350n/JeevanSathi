@@ -1,0 +1,18 @@
+/* ThemeToggle base styles */
+.theme-toggle-wrap{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0;padding:0;border-radius:10px;background:transparent;border:0}
+.theme-toggle-label{font-size:11px;font-weight:700;letter-spacing:.2px;color:inherit;white-space:nowrap}
+.theme-toggle{display:flex;align-items:center;gap:6px;border:0;background:transparent;padding:0;cursor:pointer;color:inherit}
+.theme-toggle-icon{font-size:14px;line-height:1}
+.theme-toggle-track{position:relative;width:36px;height:20px;border-radius:999px;background:#27324a;border:1px solid #34415d;display:inline-block;transition:.2s ease}
+.theme-toggle-thumb{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.25);transition:.2s ease}
+.theme-toggle.is-light .theme-toggle-track{background:#12b89f;border-color:#12b89f}
+.theme-toggle.is-light .theme-toggle-thumb{transform:translateX(16px)}
+.theme-toggle:focus-visible{outline:2px solid #12b89f;outline-offset:3px;border-radius:6px}
+
+/* Citizen dashboard top-right version */
+.citizen-top-theme .theme-toggle-wrap{height:38px;box-sizing:border-box;padding:0 10px 0 11px;gap:8px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13)}
+.citizen-top-theme .theme-toggle-label{font-size:12px}
+[data-theme="light"] .citizen-top-theme .theme-toggle-wrap{background:#fff;border-color:#dce3e8;color:#344054;box-shadow:0 3px 10px rgba(15,23,42,.06)}
+[data-theme="light"] .citizen-top-theme .theme-toggle-wrap:hover{background:#effaf7;border-color:#9ee3d5}
+[data-theme="light"] .citizen-top-theme .theme-toggle-track{background:#cbd5e1;border-color:#cbd5e1}
+[data-theme="light"] .citizen-top-theme .theme-toggle.is-light .theme-toggle-track{background:#12b89f;border-color:#12b89f}

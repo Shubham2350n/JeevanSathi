@@ -307,7 +307,6 @@ def get_citizen_jobs():
     for job in jobs:
 
         worker = None
-
         worker_user = None
 
         if job.worker_id:
@@ -815,6 +814,7 @@ def get_citizen_complaints():
                 if complaint.updated_at
                 else None
             )
+
         })
 
     return jsonify({

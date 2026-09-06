@@ -5,6 +5,10 @@ from flask_jwt_extended import JWTManager
 from database import db
 
 
+# =========================================================
+# FLASK APP
+# =========================================================
+
 app = Flask(__name__)
 
 
@@ -16,7 +20,7 @@ CORS(app)
 
 
 # =========================================================
-# DATABASE CONFIGURATION
+# CONFIGURATION
 # =========================================================
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
@@ -25,27 +29,27 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-
-# =========================================================
-# JWT CONFIGURATION
-# =========================================================
-
 app.config["JWT_SECRET_KEY"] = (
     "jeevansetu-super-secret-key"
 )
 
 
 # =========================================================
-# INITIALIZE EXTENSIONS
+# DATABASE
 # =========================================================
 
 db.init_app(app)
+
+
+# =========================================================
+# JWT
+# =========================================================
 
 jwt = JWTManager(app)
 
 
 # =========================================================
-# IMPORT MODELS
+# MODELS
 # =========================================================
 
 from models import (
@@ -53,12 +57,13 @@ from models import (
     Worker,
     Job,
     Review,
-    Complaint
+    Complaint,
+    JobLocation
 )
 
 
 # =========================================================
-# IMPORT ROUTES
+# ROUTES
 # =========================================================
 
 from routes.auth import auth_bp
@@ -66,10 +71,11 @@ from routes.citizen import citizen_bp
 from routes.worker import worker_bp
 from routes.government import government_bp
 from routes.ai import ai_bp
+from routes.location import location_bp
 
 
 # =========================================================
-# REGISTER BLUEPRINTS
+# BLUEPRINTS
 # =========================================================
 
 app.register_blueprint(
@@ -97,6 +103,11 @@ app.register_blueprint(
     url_prefix="/api/ai"
 )
 
+app.register_blueprint(
+    location_bp,
+    url_prefix="/api/location"
+)
+
 
 # =========================================================
 # HOME
@@ -108,14 +119,13 @@ def home():
     return jsonify({
         "message":
             "JeevanSetu Backend is Running!",
-
         "status":
             "success"
     })
 
 
 # =========================================================
-# HEALTH CHECK
+# HEALTH
 # =========================================================
 
 @app.route("/api/health")
@@ -124,7 +134,6 @@ def health():
     return jsonify({
         "message":
             "JeevanSetu API is healthy",
-
         "status":
             "success"
     })
@@ -138,14 +147,11 @@ def health():
 def database_test():
 
     users = User.query.count()
-
     workers = Worker.query.count()
-
     jobs = Job.query.count()
-
     reviews = Review.query.count()
-
     complaints = Complaint.query.count()
+    locations = JobLocation.query.count()
 
     return jsonify({
 
@@ -162,12 +168,16 @@ def database_test():
             reviews,
 
         "complaints":
-            complaints
+            complaints,
+
+        "locations":
+            locations
+
     })
 
 
 # =========================================================
-# CREATE DATABASE TABLES
+# CREATE TABLES
 # =========================================================
 
 with app.app_context():
@@ -176,7 +186,7 @@ with app.app_context():
 
 
 # =========================================================
-# RUN APPLICATION
+# RUN
 # =========================================================
 
 if __name__ == "__main__":

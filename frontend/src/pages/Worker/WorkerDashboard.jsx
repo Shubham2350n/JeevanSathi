@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
+import { useTheme } from "../../context/ThemeContext";
 import API from "../../services/api";
+import LocationTracker from "../../components/LocationTracker";
 import "./WorkerDashboard.css";
 
 function WorkerDashboard() {
+  const { darkMode, toggleTheme } = useTheme();
+
   const [worker, setWorker] = useState(null);
   const [requests, setRequests] = useState([]);
   const [activeJobs, setActiveJobs] = useState([]);
@@ -58,6 +62,8 @@ function WorkerDashboard() {
 
   useEffect(() => {
     loadWorkerData();
+    const refreshTimer = setInterval(loadWorkerData, 5000);
+    return () => clearInterval(refreshTimer);
   }, []);
 
   // ==========================================
@@ -226,7 +232,6 @@ function WorkerDashboard() {
   // ==========================================
 
   const logout = () => {
-    setMobileMenuOpen(false);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
 
@@ -262,39 +267,14 @@ function WorkerDashboard() {
   return (
     <div className="worker-dashboard">
 
+      <button type="button" className="worker-mobile-menu-button" onClick={() => setMobileMenuOpen(true)} aria-label="Open navigation menu">☰</button>
+      {mobileMenuOpen && <button type="button" className="worker-mobile-overlay" onClick={closeMobileMenu} aria-label="Close navigation menu" />}
+
       {/* ========================================
           SIDEBAR
       ======================================== */}
 
-      <button
-        type="button"
-        className="worker-mobile-menu-button"
-        aria-label="Open navigation menu"
-        aria-expanded={mobileMenuOpen}
-        onClick={() => setMobileMenuOpen(true)}
-      >
-        ☰
-      </button>
-
-      {mobileMenuOpen && (
-        <button
-          type="button"
-          className="worker-mobile-overlay"
-          aria-label="Close navigation menu"
-          onClick={closeMobileMenu}
-        />
-      )}
-
-      <aside className={mobileMenuOpen ? "worker-sidebar mobile-open" : "worker-sidebar"}>
-
-        <button
-          type="button"
-          className="worker-mobile-close"
-          aria-label="Close navigation menu"
-          onClick={closeMobileMenu}
-        >
-          ×
-        </button>
+      <aside className={`worker-sidebar ${mobileMenuOpen ? "mobile-open" : ""}`}>
 
         <div className="sidebar-brand">
           <div className="brand-symbol">
@@ -339,7 +319,6 @@ function WorkerDashboard() {
           <a
             href="#dashboard"
             className="worker-nav-item active"
-            onClick={closeMobileMenu}
           >
             <span className="nav-icon">
               🏠
@@ -351,7 +330,6 @@ function WorkerDashboard() {
           <a
             href="#requests"
             className="worker-nav-item"
-            onClick={closeMobileMenu}
           >
             <span className="nav-icon">
               📩
@@ -369,7 +347,6 @@ function WorkerDashboard() {
           <a
             href="#active"
             className="worker-nav-item"
-            onClick={closeMobileMenu}
           >
             <span className="nav-icon">
               🔧
@@ -387,7 +364,6 @@ function WorkerDashboard() {
           <a
             href="#completed"
             className="worker-nav-item"
-            onClick={closeMobileMenu}
           >
             <span className="nav-icon">
               ✅
@@ -405,7 +381,6 @@ function WorkerDashboard() {
           <a
             href="#profile"
             className="worker-nav-item"
-            onClick={closeMobileMenu}
           >
             <span className="nav-icon">
               👤
@@ -506,6 +481,16 @@ function WorkerDashboard() {
                 : "Busy"}
 
             </div>
+
+            <button
+              type="button"
+              className="worker-top-theme"
+              onClick={toggleTheme}
+              title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+              aria-label={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+              {darkMode ? "☀️" : "🌙"}
+            </button>
 
             <button
               type="button"
@@ -1060,6 +1045,16 @@ function WorkerDashboard() {
 
                   </div>
 
+
+                  {(job.status === "accepted" || job.status === "in_progress") && (
+                    <LocationTracker jobId={job.id} myRole="worker" enabled />
+                  )}
+
+                  {job.citizen_phone && /^\d{10}$/.test(String(job.citizen_phone)) && (
+                    <a className="worker-contact-link" href={`tel:${job.citizen_phone}`}>
+                      📞 Contact Citizen
+                    </a>
+                  )}
 
                   {job.status ===
                     "accepted" && (

@@ -1,15 +1,13 @@
-import ThemeToggle from "../../components/ThemeToggle";
 import { useEffect, useState } from "react";
-
+import { Sun, Moon } from "lucide-react";
 import API, {
   getWorkers
 } from "../../services/api";
 
 import JeevanSathi from "./JeevanSathi";
-import LocationTracker from "../../components/LocationTracker";
 
 import "./CitizenDashboard.css";
-
+import LocationTracker from "../../components/LocationTracker";
 
 function CitizenDashboard() {
 
@@ -33,7 +31,26 @@ function CitizenDashboard() {
   const [jobsLoading, setJobsLoading] = useState(true);
 
   const [complaintsLoading, setComplaintsLoading] =
-    useState(true);
+    useState(true);const [darkMode, setDarkMode] = useState(
+  localStorage.getItem("theme") !== "light"
+);
+
+useEffect(() => {
+  document.documentElement.setAttribute(
+    "data-theme",
+    darkMode ? "dark" : "light"
+  );
+
+  localStorage.setItem(
+    "theme",
+    darkMode ? "dark" : "light"
+  );
+}, [darkMode]);
+
+const toggleTheme = () => {
+  setDarkMode((prev) => !prev);
+};
+
 
 
   // =====================================================
@@ -1044,10 +1061,6 @@ function CitizenDashboard() {
 
           <div className="topbar-actions">
 
-            <div className="citizen-top-theme">
-              <ThemeToggle />
-            </div>
-
             <button
               className="top-refresh"
               onClick={() => {
@@ -1603,17 +1616,6 @@ function CitizenDashboard() {
                       <div className="job-skill-row">
                         🔧 {job.worker_skill}
                       </div>
-
-                    )}
-
-                    {(job.status === "accepted" ||
-                      job.status === "in_progress") && (
-
-                      <LocationTracker
-                        jobId={job.id}
-                        myRole="citizen"
-                        enabled
-                      />
 
                     )}
 

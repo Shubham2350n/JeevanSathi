@@ -130,8 +130,27 @@ class Job(db.Model):
     )
 
     location = db.Column(
-        db.String(100),
+        db.String(200),
         nullable=False
+    )
+
+    # =====================================================
+    # CITIZEN GPS LOCATION
+    # =====================================================
+
+    latitude = db.Column(
+        db.Float,
+        nullable=True
+    )
+
+    longitude = db.Column(
+        db.Float,
+        nullable=True
+    )
+
+    location_accuracy = db.Column(
+        db.Float,
+        nullable=True
     )
 
     status = db.Column(
@@ -243,6 +262,59 @@ class Complaint(db.Model):
     created_at = db.Column(
         db.DateTime,
         default=datetime.utcnow
+    )
+
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+
+
+# =========================================================
+# LIVE JOB LOCATION
+# =========================================================
+
+class JobLocation(db.Model):
+    __tablename__ = "job_locations"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    job_id = db.Column(
+        db.Integer,
+        db.ForeignKey("jobs.id"),
+        nullable=False,
+        index=True
+    )
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id"),
+        nullable=False,
+        index=True
+    )
+
+    role = db.Column(
+        db.String(20),
+        nullable=False
+    )
+
+    latitude = db.Column(
+        db.Float,
+        nullable=False
+    )
+
+    longitude = db.Column(
+        db.Float,
+        nullable=False
+    )
+
+    accuracy = db.Column(
+        db.Float,
+        nullable=True
     )
 
     updated_at = db.Column(

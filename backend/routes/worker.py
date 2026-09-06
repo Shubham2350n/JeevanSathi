@@ -1,12 +1,19 @@
 from flask import Blueprint, jsonify, request
+
 from flask_jwt_extended import (
     jwt_required,
     get_jwt_identity
 )
 
 from database import db
-from models import User, Worker, Job
 
+from models import (
+    User,
+    Worker,
+    Job,
+    Review,
+    Complaint
+)
 
 worker_bp = Blueprint(
     "worker",
@@ -78,6 +85,198 @@ def get_profile():
             "certifications": worker.certifications
 
         }
+
+    }), 200
+
+
+# ==========================================
+# WORKER RATINGS / REVIEWS
+# ==========================================
+
+@worker_bp.route(
+    "/reviews",
+    methods=["GET"]
+)
+@jwt_required()
+def get_worker_reviews():
+
+    user, worker = get_current_worker()
+
+    if not user or not worker:
+
+        return jsonify({
+            "message": "Worker not found"
+        }), 404
+
+    reviews = Review.query.filter_by(
+        worker_id=worker.id
+    ).order_by(
+        Review.created_at.desc()
+    ).all()
+
+    result = []
+
+    for review in reviews:
+
+        citizen = User.query.get(
+            review.citizen_id
+        )
+
+        job = Job.query.get(
+            review.job_id
+        )
+
+        result.append({
+
+            "id": review.id,
+
+            "job_id": review.job_id,
+
+            "citizen_id": review.citizen_id,
+
+            "citizen_name":
+                citizen.name
+                if citizen
+                else "Citizen",
+
+            "rating": review.rating,
+
+            "feedback": review.feedback,
+
+            "service":
+                job.service
+                if job
+                else "Service",
+
+            "created_at":
+                review.created_at.isoformat()
+
+        })
+
+    if reviews:
+
+        average_rating = round(
+            sum(
+                review.rating
+                for review in reviews
+            ) / len(reviews),
+            1
+        )
+
+    else:
+
+        average_rating = 0
+
+    return jsonify({
+
+        "reviews": result,
+
+        "average_rating": average_rating,
+
+        "total_reviews": len(reviews)
+
+    }), 200
+
+
+# ==========================================
+# WORKER COMPLAINTS
+# ==========================================
+
+@worker_bp.route(
+    "/complaints",
+    methods=["GET"]
+)
+@jwt_required()
+def get_worker_complaints():
+
+    user, worker = get_current_worker()
+
+    if not user or not worker:
+
+        return jsonify({
+            "message": "Worker not found"
+        }), 404
+
+    jobs = Job.query.filter_by(
+        worker_id=worker.id
+    ).all()
+
+    job_ids = [
+        job.id
+        for job in jobs
+    ]
+
+    if not job_ids:
+
+        return jsonify({
+            "complaints": []
+        }), 200
+
+    complaints = Complaint.query.filter(
+        Complaint.job_id.in_(job_ids)
+    ).order_by(
+        Complaint.created_at.desc()
+    ).all()
+
+    result = []
+
+    for complaint in complaints:
+
+        citizen = User.query.get(
+            complaint.citizen_id
+        )
+
+        job = Job.query.get(
+            complaint.job_id
+        ) if complaint.job_id else None
+
+        result.append({
+
+            "id": complaint.id,
+
+            "job_id": complaint.job_id,
+
+            "citizen_id":
+                complaint.citizen_id,
+
+            "citizen_name":
+                citizen.name
+                if citizen
+                else "Citizen",
+
+            "subject":
+                complaint.subject,
+
+            "description":
+                complaint.description,
+
+            "priority":
+                complaint.priority,
+
+            "status":
+                complaint.status,
+
+            "resolution_note":
+                complaint.resolution_note,
+
+            "service":
+                job.service
+                if job
+                else "Service",
+
+            "created_at":
+                complaint.created_at.isoformat(),
+
+            "updated_at":
+                complaint.updated_at.isoformat()
+                if complaint.updated_at
+                else None
+
+        })
+
+    return jsonify({
+
+        "complaints": result
 
     }), 200
 
@@ -260,6 +459,10 @@ def get_active_jobs():
 # COMPLETED JOBS
 # ==========================================
 
+# ==========================================
+# COMPLETED JOBS
+# ==========================================
+
 @worker_bp.route(
     "/jobs/completed",
     methods=["GET"]
@@ -270,7 +473,6 @@ def get_completed_jobs():
     user, worker = get_current_worker()
 
     if not user or not worker:
-
         return jsonify({
             "message": "Worker not found"
         }), 404
@@ -286,6 +488,12 @@ def get_completed_jobs():
 
     for job in jobs:
 
+        # Find review given by citizen for this job
+        review = Review.query.filter_by(
+            job_id=job.id,
+            worker_id=worker.id
+        ).first()
+
         result.append({
 
             "id": job.id,
@@ -296,14 +504,27 @@ def get_completed_jobs():
 
             "location": job.location,
 
-            "status": job.status
+            "status": job.status,
+
+            # Citizen rating
+            "rating": (
+                review.rating
+                if review
+                else None
+            ),
+
+            # Citizen feedback
+            "feedback": (
+                review.feedback
+                if review
+                else None
+            )
 
         })
 
     return jsonify({
         "jobs": result
     }), 200
-
 
 # ==========================================
 # ACCEPT JOB

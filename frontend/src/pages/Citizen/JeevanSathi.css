@@ -1648,3 +1648,1242 @@
     width: 100%;
   }
 }
+/* =========================================================
+   JEEVANSETU — JEEVAN SATHI PREMIUM THEME
+   UI ONLY — DO NOT CHANGE JSX / API / LOGIC
+   ========================================================= */
+
+:root {
+  --js-bg: #050b16;
+  --js-bg-2: #081321;
+  --js-card: rgba(10, 24, 39, 0.80);
+  --js-card-strong: rgba(6, 17, 29, 0.94);
+
+  --js-teal: #20d3b2;
+  --js-emerald: #10b981;
+  --js-cyan: #39e8ff;
+
+  --js-white: #f4fffc;
+  --js-text: #dceeea;
+  --js-muted: #8fa7b8;
+
+  --js-border: rgba(32, 211, 178, 0.16);
+  --js-border-hover: rgba(32, 211, 178, 0.38);
+}
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.jeevan-sathi-page {
+  width: 100% !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 15px 0 50px !important;
+
+  color: var(--js-text) !important;
+}
+
+/* =========================================================
+   AI HERO
+   ========================================================= */
+
+.ai-hero {
+  position: relative;
+
+  background:
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(32, 211, 178, 0.15),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 10% 90%,
+      rgba(57, 232, 255, 0.07),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #0b1d2b,
+      #06121f
+    ) !important;
+
+  border: 1px solid var(--js-border) !important;
+
+  box-shadow:
+    0 25px 65px rgba(0, 0, 0, 0.30),
+    inset 0 1px rgba(255, 255, 255, 0.035);
+
+  backdrop-filter: blur(18px);
+}
+
+.ai-hero::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--js-teal),
+      var(--js-cyan),
+      transparent
+    );
+
+  opacity: 0.8;
+}
+
+.ai-hero::after {
+  background:
+    rgba(32, 211, 178, 0.07) !important;
+
+  box-shadow:
+    0 0 70px rgba(32, 211, 178, 0.10);
+}
+
+.ai-hero-icon {
+  background:
+    linear-gradient(
+      135deg,
+      var(--js-teal),
+      var(--js-emerald)
+    ) !important;
+
+  color: #03120f;
+
+  box-shadow:
+    0 12px 35px rgba(32, 211, 178, 0.25),
+    0 0 30px rgba(32, 211, 178, 0.10);
+}
+
+.ai-badge {
+  color: #62e9cb !important;
+
+  background:
+    rgba(32, 211, 178, 0.09) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.16);
+}
+
+.ai-hero h1 {
+  color: var(--js-white) !important;
+}
+
+.ai-hero p {
+  color: var(--js-muted) !important;
+}
+
+/* =========================================================
+   PROBLEM SECTION
+   ========================================================= */
+
+.ai-problem-section {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10, 26, 41, 0.88),
+      rgba(6, 17, 29, 0.84)
+    ) !important;
+
+  border:
+    1px solid var(--js-border) !important;
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.22),
+    inset 0 1px rgba(255, 255, 255, 0.025);
+
+  backdrop-filter: blur(18px);
+}
+
+.ai-section-heading > span {
+  background:
+    rgba(32, 211, 178, 0.09) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.13);
+}
+
+.ai-section-heading h2 {
+  color: var(--js-white) !important;
+}
+
+.ai-section-heading p {
+  color: var(--js-muted) !important;
+}
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.problem-textarea {
+  background:
+    rgba(3, 12, 22, 0.90) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.14) !important;
+
+  color:
+    var(--js-white) !important;
+
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.problem-textarea::placeholder {
+  color: #647b8b !important;
+}
+
+.problem-textarea:focus {
+  border-color:
+    var(--js-teal) !important;
+
+  box-shadow:
+    0 0 0 4px rgba(32, 211, 178, 0.08),
+    0 0 25px rgba(32, 211, 178, 0.05);
+}
+
+/* =========================================================
+   VOICE COMMAND
+   ========================================================= */
+
+.voice-command-area {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(32, 211, 178, 0.055),
+      rgba(57, 232, 255, 0.025)
+    ) !important;
+
+  border:
+    1px solid var(--js-border) !important;
+}
+
+.voice-mic {
+  background:
+    rgba(32, 211, 178, 0.09) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.14);
+}
+
+.voice-info strong {
+  color: var(--js-white) !important;
+}
+
+.voice-info p {
+  color: var(--js-muted) !important;
+}
+
+.voice-btn {
+  background:
+    rgba(32, 211, 178, 0.08) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.20) !important;
+
+  color:
+    #5de5c7 !important;
+}
+
+.voice-btn:hover {
+  background:
+    rgba(32, 211, 178, 0.15) !important;
+
+  box-shadow:
+    0 0 20px rgba(32, 211, 178, 0.08);
+}
+
+.voice-btn.stop {
+  background:
+    rgba(255, 82, 103, 0.08) !important;
+}
+
+/* =========================================================
+   LOCATION
+   ========================================================= */
+
+.location-input label {
+  color: var(--js-text) !important;
+}
+
+.location-input input {
+  background:
+    rgba(3, 12, 22, 0.90) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.14) !important;
+
+  color:
+    var(--js-white) !important;
+}
+
+.location-input input::placeholder {
+  color: #647b8b !important;
+}
+
+.location-input input:focus {
+  border-color:
+    var(--js-teal) !important;
+
+  box-shadow:
+    0 0 0 4px rgba(32, 211, 178, 0.08);
+}
+
+/* =========================================================
+   ACTION BUTTONS
+   ========================================================= */
+
+.analyze-btn {
+  background:
+    linear-gradient(
+      135deg,
+      var(--js-teal),
+      var(--js-emerald)
+    ) !important;
+
+  color: #03120f !important;
+
+  box-shadow:
+    0 10px 25px rgba(32, 211, 178, 0.16);
+}
+
+.analyze-btn:hover {
+  box-shadow:
+    0 14px 32px rgba(32, 211, 178, 0.28);
+
+  transform:
+    translateY(-2px);
+}
+
+.example-btn {
+  background:
+    rgba(255, 255, 255, 0.035) !important;
+
+  border:
+    1px solid var(--js-border) !important;
+
+  color:
+    var(--js-text) !important;
+}
+
+.example-btn:hover {
+  background:
+    rgba(32, 211, 178, 0.07) !important;
+
+  border-color:
+    var(--js-border-hover) !important;
+}
+
+.clear-btn {
+  background:
+    transparent !important;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.10) !important;
+
+  color:
+    var(--js-muted) !important;
+}
+
+.clear-btn:hover {
+  border-color:
+    var(--js-border-hover) !important;
+
+  color:
+    var(--js-white) !important;
+}
+
+/* =========================================================
+   AI RESULT
+   ========================================================= */
+
+.ai-result-section {
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(32, 211, 178, 0.08),
+      transparent 28%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(11, 29, 44, 0.92),
+      rgba(6, 18, 30, 0.86)
+    ) !important;
+
+  border:
+    1px solid var(--js-border) !important;
+
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.26);
+
+  backdrop-filter:
+    blur(18px);
+}
+
+.result-label {
+  color:
+    var(--js-teal) !important;
+}
+
+.result-header h2 {
+  color:
+    var(--js-white) !important;
+}
+
+.ai-success-icon {
+  color:
+    #55e6b7 !important;
+
+  background:
+    rgba(32, 211, 178, 0.09) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.20) !important;
+
+  box-shadow:
+    0 0 22px rgba(32, 211, 178, 0.07);
+}
+
+/* =========================================================
+   RESULT CARDS
+   ========================================================= */
+
+.result-card {
+  background:
+    rgba(3, 13, 23, 0.65) !important;
+
+  border:
+    1px solid var(--js-border) !important;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.result-card:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    var(--js-border-hover) !important;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.20),
+    0 0 20px rgba(32, 211, 178, 0.05);
+}
+
+.result-card span {
+  color:
+    var(--js-muted) !important;
+}
+
+.result-card strong {
+  color:
+    var(--js-white) !important;
+}
+
+/* =========================================================
+   AI REASON
+   ========================================================= */
+
+.ai-reason {
+  border-left-color:
+    var(--js-teal) !important;
+
+  background:
+    rgba(32, 211, 178, 0.055) !important;
+}
+
+.ai-reason strong {
+  color:
+    #58e4c2 !important;
+}
+
+.ai-reason p {
+  color:
+    var(--js-muted) !important;
+}
+
+/* =========================================================
+   FIND WORKERS
+   ========================================================= */
+
+.find-workers-btn {
+  background:
+    linear-gradient(
+      135deg,
+      var(--js-teal),
+      var(--js-emerald)
+    ) !important;
+
+  color:
+    #03120f !important;
+
+  box-shadow:
+    0 10px 25px rgba(32, 211, 178, 0.15);
+}
+
+.find-workers-btn:hover {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 14px 32px rgba(32, 211, 178, 0.27);
+}
+
+/* =========================================================
+   WORKERS RESULT
+   ========================================================= */
+
+.workers-result-section {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10, 26, 41, 0.90),
+      rgba(6, 17, 29, 0.85)
+    ) !important;
+
+  border:
+    1px solid var(--js-border) !important;
+
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.23);
+
+  backdrop-filter:
+    blur(18px);
+}
+
+.workers-result-header h2 {
+  color:
+    var(--js-white) !important;
+}
+
+.workers-result-header p {
+  color:
+    var(--js-muted) !important;
+}
+
+.worker-count {
+  color:
+    #5de5c7 !important;
+
+  background:
+    rgba(32, 211, 178, 0.08) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.17) !important;
+}
+
+/* =========================================================
+   MATCHED WORKER CARDS
+   ========================================================= */
+
+.matched-worker-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(12, 30, 45, 0.88),
+      rgba(6, 18, 30, 0.84)
+    ) !important;
+
+  border:
+    1px solid var(--js-border) !important;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.20);
+
+  backdrop-filter:
+    blur(12px);
+}
+
+.matched-worker-card:hover {
+  transform:
+    translateY(-5px);
+
+  border-color:
+    var(--js-border-hover) !important;
+
+  box-shadow:
+    0 22px 45px rgba(0, 0, 0, 0.27),
+    0 0 25px rgba(32, 211, 178, 0.06);
+}
+
+/* =========================================================
+   WORKER AVATAR
+   ========================================================= */
+
+.worker-avatar {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(32, 211, 178, 0.16),
+      rgba(16, 185, 129, 0.10)
+    ) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.20);
+}
+
+.matched-worker-card h3 {
+  color:
+    var(--js-white) !important;
+}
+
+.worker-skill {
+  color:
+    var(--js-teal) !important;
+}
+
+.worker-details span {
+  background:
+    rgba(255, 255, 255, 0.035) !important;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.06);
+
+  color:
+    var(--js-text) !important;
+}
+
+.worker-location {
+  color:
+    var(--js-muted) !important;
+}
+
+/* =========================================================
+   GENERAL BUTTONS / REQUEST WORKER
+   ========================================================= */
+
+.request-worker-btn {
+  background:
+    linear-gradient(
+      135deg,
+      var(--js-teal),
+      var(--js-emerald)
+    ) !important;
+
+  color:
+    #03120f !important;
+
+  border:
+    none !important;
+
+  box-shadow:
+    0 8px 22px rgba(32, 211, 178, 0.13);
+
+  transition:
+    0.2s ease;
+}
+
+.request-worker-btn:hover {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 12px 28px rgba(32, 211, 178, 0.25);
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .jeevan-sathi-page {
+    padding:
+      10px 0 30px !important;
+  }
+
+  .ai-hero {
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+
+    padding:
+      24px 20px !important;
+  }
+
+  .ai-hero-icon {
+    width: 58px;
+    height: 58px;
+
+    font-size: 28px;
+  }
+
+  .ai-hero h1 {
+    font-size:
+      24px;
+  }
+
+  .ai-hero p {
+    font-size:
+      13px;
+  }
+
+  .ai-problem-section,
+  .ai-result-section,
+  .workers-result-section {
+    padding:
+      20px !important;
+  }
+
+  .voice-command-area {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+  .voice-btn {
+    width:
+      100%;
+  }
+
+  .ai-actions {
+    flex-direction:
+      column;
+
+    align-items:
+      stretch;
+  }
+
+  .analyze-btn,
+  .example-btn,
+  .clear-btn,
+  .find-workers-btn {
+    width:
+      100%;
+  }
+
+  .result-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .matched-workers-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .workers-result-header {
+    flex-direction:
+      column;
+  }
+
+  .worker-count {
+    align-self:
+      flex-start;
+  }
+}
+
+@media (max-width: 430px) {
+
+  .result-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .ai-section-heading {
+    gap:
+      10px;
+  }
+
+  .ai-section-heading h2 {
+    font-size:
+      18px;
+  }
+
+  .problem-textarea {
+    min-height:
+      120px;
+  }
+}
+/* =========================================================
+   JEEVAN SATHI — FINAL TEXTBOX + WHITE SIDE FIX
+   UI ONLY — DO NOT CHANGE JSX / API / LOGIC
+   ========================================================= */
+
+
+/* =========================================================
+   1. REMOVE WHITE SIDES
+   ========================================================= */
+
+/* Jeevan Sathi ke parent content area ko dark rakho */
+.app-content:has(.jeevan-sathi-page),
+.main-content:has(.jeevan-sathi-page) {
+  background:
+    radial-gradient(
+      circle at 85% 5%,
+      rgba(32, 211, 178, 0.07),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 10% 85%,
+      rgba(57, 232, 255, 0.04),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #030914,
+      #06111d 50%,
+      #071624
+    ) !important;
+
+  color: #dceeea !important;
+}
+
+
+/* Page itself */
+.jeevan-sathi-page {
+  background: transparent !important;
+  color: #e8f7f4 !important;
+}
+
+
+/* Agar main content ki white strip aa rahi ho */
+.jeevan-sathi-page,
+.jeevan-sathi-page * {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   2. PROBLEM SECTION — MORE PREMIUM
+   ========================================================= */
+
+.ai-problem-section {
+  position: relative;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10, 29, 42, 0.94),
+      rgba(5, 17, 29, 0.94)
+    ) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.20) !important;
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.28),
+    0 0 30px rgba(32, 211, 178, 0.035);
+}
+
+
+/* =========================================================
+   3. TEXT BOX — CLEARLY HIGHLIGHTED
+   ========================================================= */
+
+.problem-textarea {
+  width: 100% !important;
+  min-height: 150px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(3, 15, 25, 0.98),
+      rgba(6, 22, 34, 0.96)
+    ) !important;
+
+  color:
+    #f4fffc !important;
+
+  border:
+    1.5px solid rgba(32, 211, 178, 0.32) !important;
+
+  border-radius:
+    15px !important;
+
+  padding:
+    18px 19px !important;
+
+  font-size:
+    15px !important;
+
+  line-height:
+    1.65 !important;
+
+  box-shadow:
+    inset 0 0 25px rgba(32, 211, 178, 0.025),
+    0 0 0 1px rgba(32, 211, 178, 0.025);
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+
+/* Placeholder ko clearly visible rakho */
+.problem-textarea::placeholder {
+  color:
+    #718c9c !important;
+
+  opacity:
+    1 !important;
+}
+
+
+/* Click karne par strong highlight */
+.problem-textarea:focus {
+  border-color:
+    #20d3b2 !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(4, 20, 31, 1),
+      rgba(6, 27, 39, 1)
+    ) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(32, 211, 178, 0.10),
+    0 0 25px rgba(32, 211, 178, 0.10),
+    inset 0 0 25px rgba(32, 211, 178, 0.025) !important;
+}
+
+
+/* =========================================================
+   4. TEXTBOX LABEL / HEADING MORE VISIBLE
+   ========================================================= */
+
+.ai-section-heading h2 {
+  color:
+    #f5fffd !important;
+
+  text-shadow:
+    0 0 18px rgba(32, 211, 178, 0.08);
+}
+
+.ai-section-heading p {
+  color:
+    #94abb7 !important;
+}
+
+
+/* Icon ko bhi teal highlight */
+.ai-section-heading > span {
+  background:
+    rgba(32, 211, 178, 0.10) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.16);
+
+  box-shadow:
+    0 0 20px rgba(32, 211, 178, 0.06);
+}
+
+
+/* =========================================================
+   5. VOICE BOX MATCHING THEME
+   ========================================================= */
+
+.voice-command-area {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(32, 211, 178, 0.055),
+      rgba(16, 185, 129, 0.025)
+    ) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.14) !important;
+}
+
+.voice-mic {
+  background:
+    rgba(32, 211, 178, 0.10) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.12);
+}
+
+
+/* =========================================================
+   6. LOCATION INPUT
+   ========================================================= */
+
+.location-input input {
+  background:
+    rgba(3, 15, 25, 0.96) !important;
+
+  color:
+    #f4fffc !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.20) !important;
+}
+
+.location-input input:focus {
+  border-color:
+    #20d3b2 !important;
+
+  box-shadow:
+    0 0 0 3px rgba(32, 211, 178, 0.09) !important;
+}
+
+
+/* =========================================================
+   7. ANALYZE BUTTON — SAME BRAND
+   ========================================================= */
+
+.analyze-btn {
+  background:
+    linear-gradient(
+      135deg,
+      #20d3b2,
+      #10b981
+    ) !important;
+
+  color:
+    #03120f !important;
+
+  box-shadow:
+    0 8px 24px rgba(32, 211, 178, 0.18) !important;
+}
+
+.analyze-btn:hover {
+  box-shadow:
+    0 12px 32px rgba(32, 211, 178, 0.28) !important;
+}
+
+
+/* =========================================================
+   8. EXAMPLE BUTTON
+   ========================================================= */
+
+.example-btn {
+  background:
+    rgba(255, 255, 255, 0.035) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.15) !important;
+
+  color:
+    #cfe4df !important;
+}
+
+.example-btn:hover {
+  background:
+    rgba(32, 211, 178, 0.07) !important;
+
+  border-color:
+    rgba(32, 211, 178, 0.30) !important;
+}
+
+
+/* =========================================================
+   9. CLEAR BUTTON
+   ========================================================= */
+
+.clear-btn {
+  color:
+    #8fa7b8 !important;
+
+  border-color:
+    rgba(32, 211, 178, 0.14) !important;
+}
+
+.clear-btn:hover {
+  color:
+    #eafff9 !important;
+
+  border-color:
+    rgba(32, 211, 178, 0.30) !important;
+
+  background:
+    rgba(32, 211, 178, 0.04) !important;
+}
+
+
+/* =========================================================
+   10. MOBILE TEXTBOX
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .problem-textarea {
+    min-height:
+      145px !important;
+
+    padding:
+      15px !important;
+
+    font-size:
+      14px !important;
+  }
+
+}
+
+.gps-location-row{display:flex;align-items:stretch;gap:10px;width:100%}.gps-location-row input{flex:1;min-width:0}.gps-location-btn,.map-location-btn{flex-shrink:0;padding:12px 16px;border:1px solid rgba(22,160,133,.35);border-radius:11px;color:#fff;background:linear-gradient(135deg,#117864,#16a085);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}.gps-location-btn:disabled{opacity:.65;cursor:wait}.map-location-btn{margin-top:10px;width:100%;background:linear-gradient(135deg,#154360,#2874a6)}.gps-success{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:10px;padding:11px 13px;border:1px solid rgba(46,204,113,.18);border-radius:11px;background:rgba(46,204,113,.07);color:#dff7e8}.gps-success div{display:flex;flex-direction:column;gap:3px}.gps-success strong{color:#2ecc71;font-size:12px}.gps-success span{color:#9fb3b0;font-size:11px}.gps-success small{color:#5dade2;font-size:11px;text-align:right;overflow-wrap:anywhere}.location-map-picker{margin-top:12px;border:1px solid rgba(93,173,226,.18);border-radius:12px;overflow:hidden}.location-map-picker p{margin:0;padding:10px 12px;color:#9fb3b0;font-size:11px;background:#071a18}.location-map-picker .leaflet-container{z-index:1}@media(max-width:650px){.gps-location-row{flex-direction:column}.gps-location-btn{width:100%}.gps-success{flex-direction:column;align-items:flex-start}.gps-success small{text-align:left}}
+
+/* =========================================================
+   JEEVAN SATHI AI — LIGHT MODE
+   Dark mode above remains unchanged.
+   ========================================================= */
+[data-theme="light"] .jeevan-sathi-page {
+  background: #f5f7fb !important;
+  color: #172033 !important;
+}
+
+[data-theme="light"] .ai-hero,
+[data-theme="light"] .ai-problem-section,
+[data-theme="light"] .ai-result-section,
+[data-theme="light"] .workers-result-section,
+[data-theme="light"] .result-card,
+[data-theme="light"] .matched-worker-card {
+  background: #ffffff !important;
+  color: #172033 !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 8px 25px rgba(23, 32, 51, 0.07) !important;
+}
+
+[data-theme="light"] .ai-hero h1,
+[data-theme="light"] .ai-section-heading h2,
+[data-theme="light"] .result-header h2,
+[data-theme="light"] .workers-result-header h2,
+[data-theme="light"] .matched-worker-card h3,
+[data-theme="light"] .ai-reason strong,
+[data-theme="light"] .worker-details span,
+[data-theme="light"] .worker-location,
+[data-theme="light"] .worker-certifications,
+[data-theme="light"] .result-card strong {
+  color: #172033 !important;
+}
+
+[data-theme="light"] .ai-hero p,
+[data-theme="light"] .ai-section-heading p,
+[data-theme="light"] .workers-result-header p,
+[data-theme="light"] .ai-reason p,
+[data-theme="light"] .voice-info p,
+[data-theme="light"] .voice-info strong,
+[data-theme="light"] .location-input label {
+  color: #5f6b7a !important;
+}
+
+[data-theme="light"] .ai-badge,
+[data-theme="light"] .result-label,
+[data-theme="light"] .worker-count {
+  color: #087f6d !important;
+}
+
+[data-theme="light"] .problem-textarea,
+[data-theme="light"] .location-input input {
+  background: #ffffff !important;
+  color: #172033 !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: none !important;
+}
+
+[data-theme="light"] .problem-textarea::placeholder,
+[data-theme="light"] .location-input input::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .problem-textarea:focus,
+[data-theme="light"] .location-input input:focus {
+  border-color: #20b99d !important;
+  box-shadow: 0 0 0 3px rgba(32, 185, 157, 0.12) !important;
+}
+
+[data-theme="light"] .voice-command-area,
+[data-theme="light"] .location-map-picker,
+[data-theme="light"] .gps-success,
+[data-theme="light"] .no-workers {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #172033 !important;
+}
+
+[data-theme="light"] .voice-warning {
+  color: #92400e !important;
+  background: #fffbeb !important;
+  border-color: #fde68a !important;
+}
+
+[data-theme="light"] .example-btn,
+[data-theme="light"] .clear-btn,
+[data-theme="light"] .change-location-btn,
+[data-theme="light"] .choose-map-btn,
+[data-theme="light"] .close-map-btn {
+  background: #ffffff !important;
+  color: #334155 !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .example-btn:hover,
+[data-theme="light"] .clear-btn:hover,
+[data-theme="light"] .change-location-btn:hover,
+[data-theme="light"] .choose-map-btn:hover,
+[data-theme="light"] .close-map-btn:hover {
+  background: #f1f5f9 !important;
+  color: #087f6d !important;
+  border-color: #94a3b8 !important;
+}
+
+[data-theme="light"] .find-workers-btn,
+[data-theme="light"] .request-worker-btn,
+[data-theme="light"] .analyze-btn,
+[data-theme="light"] .gps-location-btn {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .gps-success strong {
+  color: #15803d !important;
+}
+
+[data-theme="light"] .gps-success span {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .gps-success small {
+  color: #2563eb !important;
+}
+
+[data-theme="light"] .location-map-picker p {
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+}
+
+[data-theme="light"] .matched-worker-card:hover,
+[data-theme="light"] .result-card:hover {
+  border-color: #20b99d !important;
+  box-shadow: 0 12px 30px rgba(23, 32, 51, 0.10) !important;
+}
+
+[data-theme="light"] .verified-badge {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+  border-color: #bbf7d0 !important;
+}
+
+[data-theme="light"] .match-score {
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+}
+
+[data-theme="light"] .ai-error {
+  background: #fef2f2 !important;
+  color: #b91c1c !important;
+  border-color: #fecaca !important;
+}
+
+[data-theme="light"] .spinner {
+  border-color: #dbe5e8 !important;
+  border-top-color: #20b99d !important;
+}
+
+[data-theme="light"] .ai-success-icon {
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.15) !important;
+}

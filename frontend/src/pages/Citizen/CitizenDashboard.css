@@ -2014,3 +2014,1849 @@
     width: 100%;
   }
 }
+/* =========================================================
+   JEEVANSETU — CITIZEN DASHBOARD PREMIUM THEME
+   UI ONLY — DO NOT CHANGE JSX / API / LOGIC
+   ========================================================= */
+
+:root {
+  --js-bg: #050b16;
+  --js-bg-light: #081321;
+  --js-card: rgba(10, 24, 39, 0.78);
+  --js-card-dark: rgba(6, 17, 29, 0.90);
+
+  --js-teal: #20d3b2;
+  --js-emerald: #10b981;
+  --js-cyan: #39e8ff;
+
+  --js-white: #f4fffc;
+  --js-text: #dceeea;
+  --js-muted: #8fa7b8;
+
+  --js-border: rgba(32, 211, 178, 0.16);
+  --js-border-hover: rgba(32, 211, 178, 0.35);
+
+  --js-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================================================
+   1. MAIN DASHBOARD BACKGROUND
+   ========================================================= */
+
+.citizen-dashboard {
+  min-height: 100vh !important;
+
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(32, 211, 178, 0.12),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(57, 232, 255, 0.08),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(16, 185, 129, 0.06),
+      transparent 30%
+    ),
+    var(--js-bg) !important;
+
+  color: var(--js-white) !important;
+}
+
+
+/* =========================================================
+   2. SIDEBAR
+   ========================================================= */
+
+.citizen-sidebar {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7, 20, 34, 0.98),
+      rgba(3, 11, 21, 0.98)
+    ) !important;
+
+  border-right: 1px solid var(--js-border) !important;
+
+  box-shadow:
+    15px 0 60px rgba(0, 0, 0, 0.30) !important;
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+
+/* =========================================================
+   3. BRAND
+   ========================================================= */
+
+.citizen-brand {
+  color: var(--js-white) !important;
+
+  border-bottom:
+    1px solid rgba(32, 211, 178, 0.10) !important;
+}
+
+
+/* =========================================================
+   4. BRAND ICON
+   ========================================================= */
+
+.citizen-brand-icon {
+  background:
+    linear-gradient(
+      135deg,
+      var(--js-teal),
+      var(--js-emerald)
+    ) !important;
+
+  color: #03130f !important;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.15) !important;
+
+  box-shadow:
+    0 0 30px rgba(32, 211, 178, 0.25) !important;
+}
+
+
+/* =========================================================
+   5. SIDEBAR MENU
+   ========================================================= */
+
+.citizen-menu-item {
+  color: var(--js-muted) !important;
+
+  background: transparent !important;
+
+  border:
+    1px solid transparent !important;
+
+  transition:
+    all 0.22s ease !important;
+}
+
+
+/* =========================================================
+   6. SIDEBAR MENU HOVER
+   ========================================================= */
+
+.citizen-menu-item:hover {
+  color: var(--js-white) !important;
+
+  background:
+    rgba(32, 211, 178, 0.07) !important;
+
+  border-color:
+    rgba(32, 211, 178, 0.13) !important;
+
+  transform:
+    translateX(3px);
+}
+
+
+/* =========================================================
+   7. ACTIVE SIDEBAR ITEM
+   ========================================================= */
+
+.citizen-menu-item.active {
+  color: var(--js-white) !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(32, 211, 178, 0.16),
+      rgba(16, 185, 129, 0.05)
+    ) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.20) !important;
+
+  box-shadow:
+    inset 3px 0 0 var(--js-teal),
+    0 8px 30px rgba(32, 211, 178, 0.06) !important;
+}
+
+
+/* =========================================================
+   8. SIDEBAR ICONS
+   ========================================================= */
+
+.citizen-menu-item svg {
+  color: currentColor !important;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.citizen-menu-item:hover svg {
+  color: var(--js-teal) !important;
+
+  transform:
+    scale(1.08);
+}
+
+.citizen-menu-item.active svg {
+  color: var(--js-teal) !important;
+}
+
+
+/* =========================================================
+   9. HELP CARD
+   ========================================================= */
+
+.citizen-help-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(32, 211, 178, 0.09),
+      rgba(16, 185, 129, 0.03)
+    ) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.15) !important;
+
+  box-shadow:
+    none !important;
+}
+
+
+/* =========================================================
+   10. USER SECTION
+   ========================================================= */
+
+.citizen-user-section {
+  border-top:
+    1px solid rgba(32, 211, 178, 0.10) !important;
+}
+
+
+/* =========================================================
+   11. USER AVATAR
+   ========================================================= */
+
+.citizen-user-avatar {
+  background:
+    linear-gradient(
+      135deg,
+      var(--js-teal),
+      var(--js-emerald)
+    ) !important;
+
+  color: #03130f !important;
+
+  box-shadow:
+    0 0 25px rgba(32, 211, 178, 0.18) !important;
+}
+
+
+/* =========================================================
+   12. MAIN CONTENT
+   ========================================================= */
+
+.citizen-main {
+  background: transparent !important;
+
+  color: var(--js-white) !important;
+}
+
+
+/* =========================================================
+   13. TOP BAR
+   ========================================================= */
+
+.citizen-topbar {
+  background:
+    rgba(6, 16, 28, 0.72) !important;
+
+  border-bottom:
+    1px solid var(--js-border) !important;
+
+  backdrop-filter:
+    blur(20px);
+
+  -webkit-backdrop-filter:
+    blur(20px);
+
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+
+/* =========================================================
+   14. PAGE TITLES
+   ========================================================= */
+
+.citizen-main h1,
+.citizen-main h2,
+.citizen-main h3 {
+  color: var(--js-white) !important;
+}
+
+
+/* =========================================================
+   15. SECONDARY TEXT
+   ========================================================= */
+
+.citizen-main p {
+  color: var(--js-muted);
+}
+
+
+/* =========================================================
+   16. OVERVIEW CARDS
+   ========================================================= */
+
+.citizen-overview-card,
+.overview-card {
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(13, 30, 47, 0.84),
+      rgba(7, 18, 31, 0.78)
+    ) !important;
+
+  border:
+    1px solid var(--js-border) !important;
+
+  border-radius:
+    18px !important;
+
+  box-shadow:
+    var(--js-shadow) !important;
+
+  backdrop-filter:
+    blur(18px);
+
+  -webkit-backdrop-filter:
+    blur(18px);
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease !important;
+}
+
+
+/* =========================================================
+   17. CARD TOP GLOW
+   ========================================================= */
+
+.citizen-overview-card::before,
+.overview-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--js-teal),
+      var(--js-cyan),
+      transparent
+    );
+
+  opacity: 0.75;
+}
+
+
+/* =========================================================
+   18. CARD HOVER
+   ========================================================= */
+
+.citizen-overview-card:hover,
+.overview-card:hover {
+  transform:
+    translateY(-4px);
+
+  border-color:
+    var(--js-border-hover) !important;
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.40),
+    0 0 30px rgba(32, 211, 178, 0.07) !important;
+}
+
+
+/* =========================================================
+   19. CARD ICON
+   ========================================================= */
+
+.citizen-stat-icon,
+.overview-icon {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(32, 211, 178, 0.18),
+      rgba(16, 185, 129, 0.07)
+    ) !important;
+
+  color:
+    var(--js-teal) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.18) !important;
+}
+
+
+/* =========================================================
+   20. NUMBERS
+   ========================================================= */
+
+.citizen-overview-card .value,
+.citizen-overview-card .number,
+.overview-card .value,
+.overview-card .number {
+  color:
+    var(--js-white) !important;
+}
+
+
+/* =========================================================
+   21. AI / JEEVAN SATHI SECTION
+   ========================================================= */
+
+.citizen-ai-section,
+.ai-section {
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(57, 232, 255, 0.10),
+      transparent 25%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(13, 31, 48, 0.88),
+      rgba(6, 17, 29, 0.80)
+    ) !important;
+
+  border:
+    1px solid rgba(32, 211, 178, 0.18) !important;
+
+  border-radius:
+    20px !important;
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.35),
+    0 0 40px rgba(32, 211, 178, 0.06) !important;
+}
+
+
+/* =========================================================
+   22. AI SECTION BUTTON
+   ========================================================= */
+
+.citizen-ai-section button,
+.ai-section button {
+  background:
+    linear-gradient(
+      135deg,
+      var(--js-teal),
+      var(--js-emerald)
+    ) !important;
+
+  color:
+    #03130f !important;
+
+  border:
+    none !important;
+
+  font-weight:
+    800 !important;
+
+  box-shadow:
+    0 12px 30px rgba(16, 185, 129, 0.20) !important;
+
+  transition:
+    all 0.2s ease !important;
+}
+
+
+.citizen-ai-section button:hover,
+.ai-section button:hover {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 16px 40px rgba(32, 211, 178, 0.28) !important;
+}
+
+
+/* =========================================================
+   23. GENERAL INNER CARDS
+   ========================================================= */
+
+.citizen-card,
+.request-card,
+.complaint-card,
+.feedback-card,
+.service-card,
+.job-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(13, 30, 47, 0.82),
+      rgba(7, 18, 31, 0.78)
+    ) !important;
+
+  border:
+    1px solid var(--js-border) !important;
+
+  color:
+    var(--js-white) !important;
+
+  box-shadow:
+    var(--js-shadow) !important;
+
+  backdrop-filter:
+    blur(16px);
+
+  -webkit-backdrop-filter:
+    blur(16px);
+
+  transition:
+    all 0.22s ease !important;
+}
+
+
+/* =========================================================
+   24. GENERAL CARD HOVER
+   ========================================================= */
+
+.citizen-card:hover,
+.request-card:hover,
+.complaint-card:hover,
+.feedback-card:hover,
+.service-card:hover,
+.job-card:hover {
+  border-color:
+    var(--js-border-hover) !important;
+
+  transform:
+    translateY(-2px);
+}
+
+
+/* =========================================================
+   25. INPUTS
+   ========================================================= */
+
+.citizen-main input,
+.citizen-main textarea,
+.citizen-main select {
+  background:
+    rgba(3, 12, 22, 0.82) !important;
+
+  color:
+    var(--js-white) !important;
+
+  border:
+    1px solid rgba(105, 153, 171, 0.20) !important;
+}
+
+
+/* =========================================================
+   26. INPUT FOCUS
+   ========================================================= */
+
+.citizen-main input:focus,
+.citizen-main textarea:focus,
+.citizen-main select:focus {
+  outline:
+    none !important;
+
+  border-color:
+    rgba(32, 211, 178, 0.60) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(32, 211, 178, 0.07),
+    0 0 25px rgba(32, 211, 178, 0.08) !important;
+}
+
+
+/* =========================================================
+   27. PRIMARY BUTTONS
+   ========================================================= */
+
+.citizen-main button {
+  transition:
+    all 0.20s ease !important;
+}
+
+
+/* =========================================================
+   28. PRIMARY ACTION BUTTONS
+   ========================================================= */
+
+.citizen-main button[type="submit"],
+.citizen-main .primary-button,
+.citizen-main .submit-button {
+  background:
+    linear-gradient(
+      135deg,
+      var(--js-teal),
+      var(--js-emerald)
+    ) !important;
+
+  color:
+    #03130f !important;
+
+  border:
+    none !important;
+
+  font-weight:
+    800 !important;
+
+  box-shadow:
+    0 10px 28px rgba(16, 185, 129, 0.18) !important;
+}
+
+
+/* =========================================================
+   29. BUTTON HOVER
+   ========================================================= */
+
+.citizen-main button[type="submit"]:hover,
+.citizen-main .primary-button:hover,
+.citizen-main .submit-button:hover {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 15px 38px rgba(32, 211, 178, 0.25) !important;
+}
+
+
+/* =========================================================
+   30. SCROLLBAR
+   ========================================================= */
+
+.citizen-dashboard {
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    rgba(32, 211, 178, 0.40)
+    rgba(4, 12, 22, 0.60);
+}
+
+
+.citizen-dashboard::-webkit-scrollbar {
+  width:
+    8px;
+}
+
+
+.citizen-dashboard::-webkit-scrollbar-track {
+  background:
+    rgba(4, 12, 22, 0.70);
+}
+
+
+.citizen-dashboard::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(32, 211, 178, 0.55),
+      rgba(16, 185, 129, 0.35)
+    );
+
+  border-radius:
+    999px;
+}
+
+
+/* =========================================================
+   31. MOBILE
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+  .citizen-sidebar {
+    box-shadow:
+      10px 0 50px rgba(0, 0, 0, 0.45) !important;
+  }
+
+  .citizen-overview-card,
+  .overview-card,
+  .citizen-card,
+  .request-card,
+  .complaint-card,
+  .feedback-card,
+  .service-card,
+  .job-card {
+    border-radius:
+      16px !important;
+  }
+
+}
+
+
+/* =========================================================
+   32. SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .citizen-overview-card,
+  .overview-card {
+    box-shadow:
+      0 18px 45px rgba(0, 0, 0, 0.28) !important;
+  }
+
+}
+/* =========================================================
+   CITIZEN MOBILE SIDEBAR
+   Premium Hamburger + Slide Sidebar
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   HAMBURGER BUTTON
+   --------------------------------------------------------- */
+
+.citizen-mobile-menu-button {
+
+  display: none;
+
+  position: fixed;
+
+  top: 18px;
+  left: 18px;
+
+  width: 46px;
+  height: 46px;
+
+  border: 1px solid rgba(45, 212, 191, 0.45);
+
+  border-radius: 12px;
+
+  background: rgba(6, 20, 31, 0.92);
+
+  backdrop-filter: blur(14px);
+
+  z-index: 10001;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.35),
+    0 0 18px rgba(45, 212, 191, 0.12);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+}
+
+
+/* ---------------------------------------------------------
+   HAMBURGER LINES
+   --------------------------------------------------------- */
+
+.citizen-mobile-menu-button span {
+
+  display: block;
+
+  width: 21px;
+  height: 2px;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+
+}
+
+
+/* ---------------------------------------------------------
+   HAMBURGER HOVER
+   --------------------------------------------------------- */
+
+.citizen-mobile-menu-button:hover {
+
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(45, 212, 191, 0.85);
+
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.4),
+    0 0 22px rgba(45, 212, 191, 0.25);
+
+}
+
+
+/* ---------------------------------------------------------
+   MOBILE OVERLAY
+   --------------------------------------------------------- */
+
+.citizen-mobile-overlay {
+
+  display: none;
+
+}
+
+
+/* =========================================================
+   TABLET + MOBILE
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+
+  /* -------------------------------------------------------
+     SHOW HAMBURGER
+     ------------------------------------------------------- */
+
+  .citizen-mobile-menu-button {
+
+    display: flex;
+
+  }
+
+
+  /* -------------------------------------------------------
+     SIDEBAR
+     ------------------------------------------------------- */
+
+  .citizen-sidebar {
+
+    position: fixed !important;
+
+    top: 0;
+    left: 0;
+
+    width: 245px !important;
+
+    height: 100vh;
+
+    min-height: 100vh;
+
+    z-index: 10000;
+
+    margin: 0 !important;
+
+    transform: translateX(-105%);
+
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+  }
+
+
+  /* -------------------------------------------------------
+     OPEN SIDEBAR
+     ------------------------------------------------------- */
+
+  .citizen-sidebar.mobile-open {
+
+    transform: translateX(0);
+
+    box-shadow:
+      12px 0 40px rgba(0, 0, 0, 0.45),
+      0 0 30px rgba(45, 212, 191, 0.08);
+
+  }
+
+
+  /* -------------------------------------------------------
+     OVERLAY
+     ------------------------------------------------------- */
+
+  .citizen-mobile-overlay {
+
+    display: block;
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+      rgba(0, 0, 0, 0.58);
+
+    backdrop-filter:
+      blur(3px);
+
+    z-index: 9998;
+
+  }
+
+
+  /* -------------------------------------------------------
+     MAIN CONTENT
+     ------------------------------------------------------- */
+
+  .citizen-main {
+
+    width: 100% !important;
+
+    margin-left: 0 !important;
+
+    padding-top: 82px !important;
+
+  }
+
+
+  /* -------------------------------------------------------
+     DASHBOARD LAYOUT
+     ------------------------------------------------------- */
+
+  .citizen-dashboard {
+
+    display: block !important;
+
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+
+  /* -------------------------------------------------------
+     HAMBURGER
+     ------------------------------------------------------- */
+
+  .citizen-mobile-menu-button {
+
+    top: 14px;
+
+    left: 14px;
+
+    width: 44px;
+
+    height: 44px;
+
+  }
+
+
+  /* -------------------------------------------------------
+     SIDEBAR WIDTH
+     ------------------------------------------------------- */
+
+  .citizen-sidebar {
+
+    width: min(280px, 86vw) !important;
+
+  }
+
+
+  /* -------------------------------------------------------
+     MAIN
+     ------------------------------------------------------- */
+
+  .citizen-main {
+
+    padding:
+      72px 14px 25px !important;
+
+  }
+
+
+  /* -------------------------------------------------------
+     TOPBAR
+     ------------------------------------------------------- */
+
+  .citizen-topbar {
+
+    margin-top: 4px;
+
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+
+  .citizen-mobile-menu-button {
+
+    width: 42px;
+
+    height: 42px;
+
+    top: 12px;
+
+    left: 12px;
+
+  }
+
+
+  .citizen-main {
+
+    padding-left: 10px !important;
+
+    padding-right: 10px !important;
+
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR SCROLLBAR
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .citizen-sidebar::-webkit-scrollbar {
+
+    width: 4px;
+
+  }
+
+
+  .citizen-sidebar::-webkit-scrollbar-track {
+
+    background: transparent;
+
+  }
+
+
+  .citizen-sidebar::-webkit-scrollbar-thumb {
+
+    background:
+      rgba(45, 212, 191, 0.35);
+
+    border-radius: 10px;
+
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR MENU TEXT
+   Keep icons + text visible
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .citizen-sidebar .citizen-menu-item {
+
+    display: flex !important;
+
+    align-items: center;
+
+    gap: 12px;
+
+    width: 100%;
+
+    white-space: normal;
+
+  }
+
+
+  .citizen-sidebar
+  .citizen-menu-item span {
+
+    display: inline-flex !important;
+
+    min-width: 24px;
+
+    align-items: center;
+
+    justify-content: center;
+
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR BRAND
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .citizen-sidebar .citizen-brand {
+
+    display: flex !important;
+
+  }
+
+
+  .citizen-sidebar .citizen-brand h2 {
+
+    display: block !important;
+
+  }
+
+
+  .citizen-sidebar .citizen-brand small {
+
+    display: block !important;
+
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE USER SECTION
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .citizen-sidebar-user {
+
+    display: flex !important;
+
+  }
+
+
+  .citizen-user-info {
+
+    display: block !important;
+
+  }
+
+
+  .citizen-user-info strong {
+
+    display: block !important;
+
+  }
+
+
+  .citizen-user-info small {
+
+    display: block !important;
+
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE HELP CARD
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .citizen-help-card {
+
+    display: block !important;
+
+  }
+
+}
+/* =========================================================
+   FINAL CITIZEN LIGHT MODE + TOP RIGHT THEME BUTTON
+   ========================================================= */
+
+.citizen-topbar .topbar-actions{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:10px !important;
+}
+
+[data-theme="light"] .citizen-dashboard,
+[data-theme="light"] .citizen-main{
+  background:#f4f7f9 !important;
+  color:#17212b !important;
+}
+
+[data-theme="light"] .citizen-sidebar{
+  background:#ffffff !important;
+  border-right:1px solid #e3e8ed !important;
+  box-shadow:8px 0 30px rgba(15,23,42,.06) !important;
+}
+
+[data-theme="light"] .citizen-topbar{
+  background:rgba(255,255,255,.97) !important;
+  border-bottom:1px solid #e5eaee !important;
+  box-shadow:0 4px 18px rgba(15,23,42,.04) !important;
+}
+
+[data-theme="light"] .citizen-topbar h1,
+[data-theme="light"] .citizen-topbar h2,
+[data-theme="light"] .citizen-topbar h3,
+[data-theme="light"] .citizen-topbar h4,
+[data-theme="light"] .citizen-topbar strong{
+  color:#17212b !important;
+}
+
+[data-theme="light"] .citizen-topbar p{color:#718096 !important;}
+[data-theme="light"] .topbar-label{color:#08a98f !important;}
+
+[data-theme="light"] .citizen-menu-item,
+[data-theme="light"] .citizen-sidebar nav button,
+[data-theme="light"] .citizen-sidebar nav a{
+  color:#52606d !important;
+}
+
+[data-theme="light"] .citizen-menu-item:hover,
+[data-theme="light"] .citizen-sidebar nav button:hover,
+[data-theme="light"] .citizen-sidebar nav a:hover{
+  color:#087f6c !important;
+  background:#effaf7 !important;
+}
+
+[data-theme="light"] .citizen-menu-item.active{
+  color:#087f6c !important;
+  background:linear-gradient(90deg,#e7faf5,#f4fcfa) !important;
+  border-color:#bcece1 !important;
+  box-shadow:inset 3px 0 0 #12b89f,0 5px 15px rgba(18,184,159,.08) !important;
+}
+
+[data-theme="light"] .citizen-brand h1,
+[data-theme="light"] .citizen-brand h2,
+[data-theme="light"] .citizen-brand h3,
+[data-theme="light"] .citizen-brand strong{color:#17212b !important;}
+[data-theme="light"] .citizen-brand p,
+[data-theme="light"] .citizen-brand small{color:#718096 !important;}
+
+[data-theme="light"] .overview-card,
+[data-theme="light"] .citizen-overview-card,
+[data-theme="light"] .service-card,
+[data-theme="light"] .citizen-service-card,
+[data-theme="light"] .citizen-card,
+[data-theme="light"] .request-card,
+[data-theme="light"] .complaint-card,
+[data-theme="light"] .feedback-card,
+[data-theme="light"] .job-card,
+[data-theme="light"] .citizen-job-card-new,
+[data-theme="light"] .citizen-worker-card{
+  background:#ffffff !important;
+  color:#17212b !important;
+  border-color:#e1e7eb !important;
+  box-shadow:0 7px 22px rgba(15,23,42,.055) !important;
+}
+
+[data-theme="light"] .overview-card:hover,
+[data-theme="light"] .citizen-overview-card:hover,
+[data-theme="light"] .service-card:hover,
+[data-theme="light"] .citizen-service-card:hover{
+  background:#ffffff !important;
+  border-color:#9edfd3 !important;
+  box-shadow:0 14px 30px rgba(15,23,42,.09) !important;
+}
+
+[data-theme="light"] .overview-card h1,
+[data-theme="light"] .overview-card h2,
+[data-theme="light"] .overview-card h3,
+[data-theme="light"] .overview-card h4,
+[data-theme="light"] .overview-card strong,
+[data-theme="light"] .service-card h1,
+[data-theme="light"] .service-card h2,
+[data-theme="light"] .service-card h3,
+[data-theme="light"] .service-card h4,
+[data-theme="light"] .service-card strong,
+[data-theme="light"] .citizen-main h1,
+[data-theme="light"] .citizen-main h2,
+[data-theme="light"] .citizen-main h3,
+[data-theme="light"] .citizen-main h4,
+[data-theme="light"] .citizen-main h5{
+  color:#17212b !important;
+}
+
+[data-theme="light"] .overview-card p,
+[data-theme="light"] .overview-card small,
+[data-theme="light"] .service-card p,
+[data-theme="light"] .citizen-main p,
+[data-theme="light"] .citizen-user-info small{
+  color:#667085 !important;
+}
+
+[data-theme="light"] .citizen-help-card{
+  background:linear-gradient(145deg,#effcf9,#f8fffd) !important;
+  border:1px solid #ccefe7 !important;
+  box-shadow:0 8px 25px rgba(15,23,42,.05) !important;
+}
+
+[data-theme="light"] .citizen-help-card strong{color:#253443 !important;}
+[data-theme="light"] .citizen-help-card p{color:#718096 !important;}
+
+[data-theme="light"] .citizen-main input,
+[data-theme="light"] .citizen-main textarea,
+[data-theme="light"] .citizen-main select{
+  background:#ffffff !important;
+  color:#17212b !important;
+  border-color:#d8e0e6 !important;
+}
+
+[data-theme="light"] .citizen-main input::placeholder,
+[data-theme="light"] .citizen-main textarea::placeholder{color:#98a2b3 !important;}
+
+[data-theme="light"] .citizen-main input:focus,
+[data-theme="light"] .citizen-main textarea:focus,
+[data-theme="light"] .citizen-main select:focus{
+  border-color:#19b99f !important;
+  box-shadow:0 0 0 3px rgba(25,185,159,.10) !important;
+}
+
+[data-theme="light"] .top-refresh,
+[data-theme="light"] .top-logout{
+  background:#ffffff !important;
+  color:#344054 !important;
+  border:1px solid #dce3e8 !important;
+  box-shadow:0 3px 10px rgba(15,23,42,.06) !important;
+}
+
+[data-theme="light"] .top-refresh:hover{
+  background:#f1fbf8 !important;
+  color:#087f6c !important;
+  border-color:#9ee3d5 !important;
+  transform:translateY(-2px) !important;
+}
+
+[data-theme="light"] .top-logout:hover{
+  background:#fff1f2 !important;
+  color:#d92d20 !important;
+  border-color:#fecdd3 !important;
+  transform:translateY(-2px) !important;
+}
+
+@media (max-width:700px){
+  .citizen-topbar .topbar-actions{gap:6px !important;}
+  .citizen-top-theme .theme-toggle-wrap{height:35px !important;padding:0 8px !important;}
+  .citizen-top-theme .theme-toggle-label{font-size:10px !important;}
+  .citizen-top-theme .theme-toggle-track{width:32px !important;height:18px !important;}
+}
+
+/* =========================================================
+   LIGHT MODE POLISH — CITIZEN DASHBOARD
+   Visual-only overrides. Existing functionality unchanged.
+   ========================================================= */
+
+[data-theme="light"] .citizen-main {
+  background:
+    radial-gradient(circle at 88% 8%, rgba(99,102,241,.07), transparent 28%),
+    radial-gradient(circle at 22% 18%, rgba(20,184,166,.06), transparent 30%),
+    #f6f9fb !important;
+  min-height: calc(100vh - 70px);
+}
+
+[data-theme="light"] .citizen-topbar {
+  min-height: 70px !important;
+  height: auto !important;
+  padding: 12px 30px !important;
+  background: rgba(255,255,255,.90) !important;
+  border-bottom: 1px solid #e4ebef !important;
+  box-shadow: 0 8px 25px rgba(16,24,40,.055) !important;
+}
+
+[data-theme="light"] .citizen-topbar > div:first-child {
+  min-width: 0;
+}
+
+[data-theme="light"] .citizen-topbar .topbar-label {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 10px !important;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: #0ba88e !important;
+}
+
+[data-theme="light"] .citizen-topbar h1,
+[data-theme="light"] .citizen-topbar h2,
+[data-theme="light"] .citizen-topbar h3 {
+  line-height: 1.15 !important;
+}
+
+[data-theme="light"] .citizen-topbar p {
+  margin-top: 4px !important;
+  color: #697586 !important;
+}
+
+[data-theme="light"] .citizen-topbar .topbar-actions {
+  flex-shrink: 0;
+  padding: 5px;
+  border-radius: 14px;
+  background: #f7fafb;
+  border: 1px solid #e5ecef;
+  box-shadow: 0 5px 16px rgba(16,24,40,.045);
+}
+
+[data-theme="light"] .citizen-top-theme .theme-toggle-wrap {
+  height: 36px !important;
+  padding: 0 8px 0 10px !important;
+  border-radius: 10px !important;
+  background: #ffffff !important;
+  border: 1px solid #dce7eb !important;
+  box-shadow: none !important;
+}
+
+[data-theme="light"] .citizen-top-theme .theme-toggle-label {
+  color: #344054 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .top-refresh,
+[data-theme="light"] .top-logout {
+  min-height: 36px !important;
+  border-radius: 10px !important;
+  padding: 8px 12px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  background: #ffffff !important;
+}
+
+[data-theme="light"] .citizen-section-heading {
+  margin-bottom: 16px !important;
+}
+
+[data-theme="light"] .citizen-section-heading > div > span {
+  display: inline-block;
+  margin-bottom: 5px;
+  color: #0ca98f !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 1.8px;
+}
+
+[data-theme="light"] .citizen-section-heading h2 {
+  margin: 0 !important;
+  color: #17212b !important;
+  font-size: 25px !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .citizen-section-heading p {
+  margin-top: 6px !important;
+  color: #667085 !important;
+}
+
+[data-theme="light"] .feedback-section {
+  padding: 0 30px 35px !important;
+  margin: 25px 0 !important;
+}
+
+[data-theme="light"] .feedback-banner {
+  position: relative;
+  overflow: hidden;
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  min-height: 78px;
+  padding: 18px 22px !important;
+  border-radius: 16px !important;
+  background:
+    radial-gradient(circle at 90% 20%, rgba(20,184,166,.14), transparent 34%),
+    linear-gradient(135deg, #ffffff 0%, #f1fbf8 100%) !important;
+  border: 1px solid #cfece5 !important;
+  box-shadow: 0 10px 28px rgba(16,24,40,.07) !important;
+}
+
+[data-theme="light"] .feedback-banner::after {
+  content: "";
+  position: absolute;
+  right: -30px;
+  bottom: -55px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 1px solid rgba(18,184,159,.15);
+  pointer-events: none;
+}
+
+[data-theme="light"] .feedback-banner-icon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #fff8cf, #ffe985);
+  box-shadow: 0 7px 18px rgba(234,179,8,.18);
+  font-size: 23px;
+}
+
+[data-theme="light"] .feedback-banner h2,
+[data-theme="light"] .feedback-banner h3 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 5px !important;
+  color: #17212b !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .feedback-banner p {
+  position: relative;
+  z-index: 1;
+  margin: 0 !important;
+  color: #667085 !important;
+  font-size: 11px !important;
+  line-height: 1.5;
+}
+
+[data-theme="light"] .complaint-list-heading {
+  margin: 18px 0 12px !important;
+}
+
+[data-theme="light"] .complaint-list-heading h3 {
+  margin: 0 !important;
+  color: #17212b !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .complaint-list-heading p {
+  margin: 5px 0 0 !important;
+  color: #667085 !important;
+  font-size: 13px !important;
+}
+
+[data-theme="light"] .citizen-job-grid {
+  gap: 16px !important;
+}
+
+[data-theme="light"] .citizen-job-card-new {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px !important;
+  background: rgba(255,255,255,.96) !important;
+  border: 1px solid #e0e8ec !important;
+  box-shadow: 0 8px 24px rgba(16,24,40,.055) !important;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease !important;
+}
+
+[data-theme="light"] .citizen-job-card-new::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, #10b99d, #53d6bd, #7c9cf5);
+}
+
+[data-theme="light"] .citizen-job-card-new:hover {
+  transform: translateY(-3px);
+  border-color: #b9e5dc !important;
+  box-shadow: 0 16px 34px rgba(16,24,40,.09) !important;
+}
+
+[data-theme="light"] .citizen-job-card-new h3,
+[data-theme="light"] .citizen-job-card-new h4,
+[data-theme="light"] .citizen-job-card-new strong {
+  color: #17212b !important;
+}
+
+[data-theme="light"] .citizen-job-card-new p,
+[data-theme="light"] .citizen-job-card-new span {
+  color: #52606d;
+}
+
+[data-theme="light"] .citizen-job-card-new .completed,
+[data-theme="light"] .citizen-job-card-new [class*="completed"] {
+  color: #087f6c !important;
+}
+
+[data-theme="light"] .citizen-job-card-new button {
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  box-shadow: 0 5px 12px rgba(18,184,159,.12);
+}
+
+@media (max-width: 850px) {
+  [data-theme="light"] .citizen-topbar {
+    padding: 10px 15px !important;
+  }
+
+  [data-theme="light"] .citizen-topbar .topbar-actions {
+    padding: 3px;
+    gap: 4px !important;
+  }
+
+  [data-theme="light"] .citizen-topbar p {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  [data-theme="light"] .feedback-section {
+    padding: 0 15px 25px !important;
+  }
+
+  [data-theme="light"] .feedback-banner {
+    align-items: flex-start !important;
+    padding: 16px !important;
+  }
+}
+/* =========================================================
+   FINAL LIGHT MODE FIX — JEEVAN SATHI AI CARD
+   ========================================================= */
+
+[data-theme="light"] .citizen-ai-section {
+  position: relative !important;
+  overflow: hidden !important;
+
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 18px !important;
+
+  background:
+    radial-gradient(
+      circle at 88% 15%,
+      rgba(99, 102, 241, 0.10),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 20% 100%,
+      rgba(20, 184, 166, 0.12),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f0fbf9 52%,
+      #f5f5ff 100%
+    ) !important;
+
+  border: 1px solid #cfe9e4 !important;
+  border-radius: 20px !important;
+
+  box-shadow:
+    0 18px 45px rgba(16, 24, 40, 0.08),
+    0 4px 14px rgba(18, 184, 159, 0.06) !important;
+
+  color: #17212b !important;
+}
+
+/* Decorative soft circles */
+[data-theme="light"] .citizen-ai-section::before {
+  content: "";
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  right: -100px;
+  top: -120px;
+
+  border-radius: 50%;
+  border: 1px solid rgba(18, 184, 159, 0.12);
+
+  box-shadow:
+    0 0 0 30px rgba(18, 184, 159, 0.025),
+    0 0 0 60px rgba(18, 184, 159, 0.018);
+
+  pointer-events: none;
+}
+
+/* AI icon */
+[data-theme="light"] .citizen-ai-icon {
+  position: relative;
+  z-index: 2;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4f7cff,
+      #7c5cff
+    ) !important;
+
+  border: 1px solid rgba(255,255,255,.65);
+
+  box-shadow:
+    0 10px 24px rgba(79, 124, 255, 0.22) !important;
+}
+
+/* Content */
+[data-theme="light"] .citizen-ai-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* AI badge */
+[data-theme="light"] .citizen-ai-content .ai-badge {
+  background: #e7faf5 !important;
+  border: 1px solid #c1eee4 !important;
+  color: #078c75 !important;
+
+  box-shadow:
+    0 4px 12px rgba(18, 184, 159, 0.07);
+}
+
+/* Heading */
+[data-theme="light"] .citizen-ai-content h2 {
+  color: #17212b !important;
+  font-weight: 800 !important;
+}
+
+/* Description */
+[data-theme="light"] .citizen-ai-content p {
+  color: #667085 !important;
+}
+
+/* =========================================================
+   PROBLEM INPUT
+   ========================================================= */
+
+[data-theme="light"] .citizen-problem-box {
+  display: inline-block !important;
+
+  width: calc(100% - 125px) !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  height: 48px !important;
+
+  margin: 0 !important;
+  padding: 0 15px !important;
+
+  box-sizing: border-box !important;
+
+  border: 1px solid #d5e2e6 !important;
+  border-radius: 12px !important;
+
+  background: rgba(255,255,255,.96) !important;
+  color: #17212b !important;
+
+  font-size: 12px !important;
+  line-height: 48px !important;
+
+  outline: none !important;
+
+  box-shadow:
+    0 5px 16px rgba(16, 24, 40, 0.05) !important;
+
+  vertical-align: middle !important;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    transform .2s ease !important;
+}
+
+[data-theme="light"] .citizen-problem-box::placeholder {
+  color: #98a2b3 !important;
+}
+
+[data-theme="light"] .citizen-problem-box:focus {
+  border-color: #19b99f !important;
+
+  box-shadow:
+    0 0 0 4px rgba(25,185,159,.10),
+    0 7px 20px rgba(16,24,40,.06) !important;
+
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   FIND HELP BUTTON
+   ========================================================= */
+
+[data-theme="light"] .citizen-ai-section button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 110px !important;
+  height: 48px !important;
+
+  margin-left: 8px !important;
+  padding: 0 14px !important;
+
+  border: none !important;
+  border-radius: 12px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #10b99d,
+      #20c997
+    ) !important;
+
+  color: #ffffff !important;
+
+  font-size: 12px !important;
+  font-weight: 800 !important;
+
+  box-shadow:
+    0 9px 20px rgba(16,185,129,.20) !important;
+
+  vertical-align: middle !important;
+
+  cursor: pointer !important;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    filter .2s ease !important;
+}
+
+[data-theme="light"] .citizen-ai-section button:hover {
+  transform: translateY(-2px) !important;
+
+  filter: brightness(1.03);
+
+  box-shadow:
+    0 14px 28px rgba(16,185,129,.26) !important;
+}
+
+/* AI decoration */
+[data-theme="light"] .ai-decoration {
+  color: #10b99d !important;
+  opacity: .55 !important;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  [data-theme="light"] .citizen-ai-section {
+    flex-direction: column !important;
+    padding: 18px !important;
+  }
+
+  [data-theme="light"] .citizen-problem-box {
+    width: 100% !important;
+    display: block !important;
+  }
+
+  [data-theme="light"] .citizen-ai-section button {
+    width: 100% !important;
+    margin: 10px 0 0 !important;
+  }
+}

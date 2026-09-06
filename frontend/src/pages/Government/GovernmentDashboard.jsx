@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTheme } from "../../context/ThemeContext";
 
 import {
   BarChart,
@@ -10,14 +11,17 @@ import {
   ResponsiveContainer,
   PieChart,
   Pie,
-  Legend
+  Legend,
+  Cell
 } from "recharts";
 
 import API from "../../services/api";
 import "./GovernmentDashboard.css";
 
 
-function GovernmentDashboard() {
+function SupervisorDashboard() {
+
+  const { darkMode, toggleTheme } = useTheme();
 
   // =========================================================
   // STATES
@@ -69,6 +73,45 @@ function GovernmentDashboard() {
   const [activeSection, setActiveSection] = useState("dashboard");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [verificationLoading, setVerificationLoading] = useState(false);
+
+  // Normalize verification values because the API may return
+  // boolean, number, or string values depending on the backend.
+  const isWorkerVerified = (worker) => {
+    const value = worker?.verified;
+
+    return (
+      value === true ||
+      value === 1 ||
+      value === "1" ||
+      value === "true" ||
+      String(worker?.verification_status || "").toLowerCase() === "verified"
+    );
+  };
+
+  // Client-side fallback filtering. This keeps the filter working even
+  // if the backend does not apply the query parameters.
+  const filteredWorkers = workers.filter((worker) => {
+    const search = workerSearch.trim().toLowerCase();
+
+    const matchesSearch = !search || [
+      worker?.name,
+      worker?.email,
+      worker?.skill,
+      worker?.location
+    ]
+      .filter(Boolean)
+      .some((value) => String(value).toLowerCase().includes(search));
+
+    const verified = isWorkerVerified(worker);
+
+    const matchesVerification =
+      workerVerification === "all" ||
+      (workerVerification === "true" && verified) ||
+      (workerVerification === "false" && !verified);
+
+    return matchesSearch && matchesVerification;
+  });
 
 
   // =========================================================
@@ -99,7 +142,7 @@ function GovernmentDashboard() {
       }
 
       if (workerVerification !== "all") {
-        params.verified = workerVerification;
+        params.verified = workerVerification === "true";
       }
 
       const response = await API.get(
@@ -332,60 +375,62 @@ function GovernmentDashboard() {
 
 
   const verifyWorker = async (workerId) => {
+    if (!workerId || verificationLoading) return;
 
     try {
+      setVerificationLoading(true);
 
       await API.put(
-        `/government/workers/${workerId}`,
-        {
-          verified: true
-        }
+        `/government/workers/${workerId}/verify`,
+        { verified: true }
       );
 
       alert("Worker verified successfully");
-
       setSelectedWorker(null);
 
-      await loadWorkers();
-      await loadDashboard();
-
+      await Promise.all([
+        loadWorkers(),
+        loadDashboard(),
+        loadAnalytics()
+      ]);
     } catch (error) {
-
       alert(
         error.response?.data?.message ||
         "Unable to verify worker"
       );
+    } finally {
+      setVerificationLoading(false);
     }
   };
 
-
   const unverifyWorker = async (workerId) => {
+    if (!workerId || verificationLoading) return;
 
     try {
+      setVerificationLoading(true);
 
       await API.put(
-        `/government/workers/${workerId}`,
-        {
-          verified: false
-        }
+        `/government/workers/${workerId}/unverify`,
+        { verified: false }
       );
 
       alert("Worker verification removed");
-
       setSelectedWorker(null);
 
-      await loadWorkers();
-      await loadDashboard();
-
+      await Promise.all([
+        loadWorkers(),
+        loadDashboard(),
+        loadAnalytics()
+      ]);
     } catch (error) {
-
       alert(
         error.response?.data?.message ||
         "Unable to update worker"
       );
+    } finally {
+      setVerificationLoading(false);
     }
   };
-
 
   // =========================================================
   // COMPLAINT MANAGEMENT
@@ -543,6 +588,36 @@ function GovernmentDashboard() {
 
 
   // =========================================================
+  // CHART DATA NORMALIZATION
+  // =========================================================
+
+  const normalizedSkillData = (skillData || []).map((item) => ({
+    ...item,
+    label: item.skill || item.service || item.name || "Unknown",
+    count: Number(item.count ?? item.total ?? item.requests ?? 0)
+  }));
+
+  const normalizedLocationData = (locationData || []).map((item) => ({
+    ...item,
+    label: item.location || item.city || item.name || "Unknown",
+    count: Number(item.count ?? item.total ?? item.jobs ?? item.requests ?? 0)
+  }));
+
+  const totalLocationJobs = normalizedLocationData.reduce(
+    (sum, item) => sum + item.count,
+    0
+  );
+
+  const chartColors = [
+    "#14b8a6",
+    "#3b82f6",
+    "#8b5cf6",
+    "#f59e0b",
+    "#ec4899",
+    "#06b6d4"
+  ];
+
+  // =========================================================
   // LOADING
   // =========================================================
 
@@ -560,7 +635,7 @@ function GovernmentDashboard() {
           </h3>
 
           <p>
-            Preparing government dashboard...
+            Preparing supervisor dashboard...
           </p>
 
         </div>
@@ -629,7 +704,7 @@ function GovernmentDashboard() {
             </h2>
 
             <span>
-              Government Portal
+              Supervisor Portal
             </span>
 
           </div>
@@ -779,7 +854,7 @@ function GovernmentDashboard() {
           <div className="profile-info">
 
             <strong>
-              Government Admin
+              Supervisor Admin
             </strong>
 
             <small>
@@ -789,6 +864,7 @@ function GovernmentDashboard() {
           </div>
 
           <button
+            type="button"
             className="logout-button"
             onClick={handleLogout}
             title="Logout"
@@ -815,7 +891,7 @@ function GovernmentDashboard() {
           <div>
 
             <h2>
-              Government Dashboard
+              Supervisor Dashboard
             </h2>
 
             <span>
@@ -825,12 +901,52 @@ function GovernmentDashboard() {
           </div>
 
 
-          <button
-            className="secondary-button"
-            onClick={loadAllData}
-          >
-            🔄 Refresh
-          </button>
+          <div className="government-top-actions">
+
+            <button
+              type="button"
+              className="government-theme-button"
+              onClick={toggleTheme}
+              title={
+                darkMode
+                  ? "Switch to Light Mode"
+                  : "Switch to Dark Mode"
+              }
+            >
+              <span className="government-theme-icon">
+                {darkMode ? "☀️" : "🌙"}
+              </span>
+              <span>
+                {darkMode ? "Light Mode" : "Dark Mode"}
+              </span>
+              <span
+                className={
+                  darkMode
+                    ? "government-theme-switch active"
+                    : "government-theme-switch"
+                }
+              >
+                <span />
+              </span>
+            </button>
+
+            <button
+              type="button"
+              className="secondary-button government-refresh-button"
+              onClick={loadAllData}
+            >
+              🔄 Refresh
+            </button>
+
+            <button
+              type="button"
+              className="government-top-logout"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+
+          </div>
 
         </header>
 
@@ -851,7 +967,7 @@ function GovernmentDashboard() {
                 <div>
 
                   <h1>
-                    Government Dashboard
+                    Supervisor Dashboard
                   </h1>
 
                   <p>
@@ -1017,248 +1133,345 @@ function GovernmentDashboard() {
 
               {/* CHARTS */}
 
-              <div className="dashboard-grid">
+              <div className="dashboard-grid premium-dashboard-charts">
 
-
-                <div className="chart-card">
-
-                  <div className="card-heading">
-
-                    <div>
-
-                      <h3>
-                        Service Demand
-                      </h3>
-
-                      <p>
-                        Requests by worker skill
-                      </p>
-
+                {/* SERVICE DEMAND */}
+                <div className="chart-card premium-chart-card">
+                  <div className="card-heading premium-card-heading">
+                    <div className="chart-title-wrap">
+                      <div className="chart-icon service-chart-icon">🛠️</div>
+                      <div>
+                        <h3>Service Demand</h3>
+                        <p>Requests by worker skill</p>
+                      </div>
                     </div>
 
+                    <div className="chart-badge">
+                      📊 {normalizedSkillData.length} Skills
+                    </div>
                   </div>
 
+                  <div className="chart-area premium-chart-area">
+                    {normalizedSkillData.length === 0 ? (
+                      <div className="empty-chart">No service demand data available.</div>
+                    ) : (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                          data={normalizedSkillData}
+                          margin={{ top: 22, right: 16, left: 0, bottom: 22 }}
+                          barCategoryGap="18%"
+                        >
+                          <CartesianGrid
+                            vertical={false}
+                            strokeDasharray="4 5"
+                            stroke={darkMode ? "#29404d" : "#dbe8ec"}
+                          />
 
-                  <div className="chart-area">
+                          <XAxis
+                            dataKey="label"
+                            axisLine={false}
+                            tickLine={false}
+                            interval={0}
+                            tick={{
+                              fill: darkMode ? "#cbd5e1" : "#526474",
+                              fontSize: 10,
+                              fontWeight: 700
+                            }}
+                            dy={8}
+                          />
 
-                    <ResponsiveContainer>
+                          <YAxis
+                            allowDecimals={false}
+                            axisLine={false}
+                            tickLine={false}
+                            tick={{
+                              fill: darkMode ? "#9fb1bd" : "#64748b",
+                              fontSize: 10,
+                              fontWeight: 600
+                            }}
+                          />
 
-                      <BarChart
-                        data={skillData}
-                      >
+                          <Tooltip
+                            cursor={{
+                              fill: darkMode
+                                ? "rgba(20,184,166,.08)"
+                                : "rgba(20,184,166,.06)"
+                            }}
+                            formatter={(value) => [`${value} Requests`, "Demand"]}
+                            contentStyle={{
+                              background: darkMode ? "#0b1d28" : "#ffffff",
+                              border: darkMode
+                                ? "1px solid #21404d"
+                                : "1px solid #dce7ea",
+                              borderRadius: "12px",
+                              boxShadow: "0 12px 30px rgba(15,23,42,.14)"
+                            }}
+                            labelStyle={{
+                              color: darkMode ? "#f8fafc" : "#17212b",
+                              fontWeight: 800
+                            }}
+                          />
 
-                        <CartesianGrid
-                          strokeDasharray="3 3"
-                          stroke="#27324a"
-                        />
-
-                        <XAxis
-                          dataKey="skill"
-                          stroke="#8993aa"
-                        />
-
-                        <YAxis
-                          stroke="#8993aa"
-                        />
-
-                        <Tooltip />
-
-                        <Bar
-                          dataKey="count"
-                          fill="#3b82f6"
-                          radius={[5, 5, 0, 0]}
-                        />
-
-                      </BarChart>
-
-                    </ResponsiveContainer>
-
+                          <Bar dataKey="count" name="Requests" radius={[9, 9, 3, 3]} maxBarSize={58}>
+                            {normalizedSkillData.map((entry, index) => (
+                              <Cell
+                                key={`skill-${index}`}
+                                fill={chartColors[index % chartColors.length]}
+                              />
+                            ))}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    )}
                   </div>
-
                 </div>
 
-
-                <div className="chart-card">
-
-                  <div className="card-heading">
-
-                    <div>
-
-                      <h3>
-                        Jobs by Location
-                      </h3>
-
-                      <p>
-                        Geographic service demand
-                      </p>
-
+                {/* JOBS BY LOCATION */}
+                <div className="chart-card premium-chart-card">
+                  <div className="card-heading premium-card-heading">
+                    <div className="chart-title-wrap">
+                      <div className="chart-icon location-chart-icon">📍</div>
+                      <div>
+                        <h3>Jobs by Location</h3>
+                        <p>Geographic service demand</p>
+                      </div>
                     </div>
 
+                    <div className="chart-badge location-badge">
+                      📍 {normalizedLocationData.length} Locations
+                    </div>
                   </div>
 
+                  <div className="location-chart-layout">
+                    <div className="location-donut-area">
+                      {normalizedLocationData.length === 0 ? (
+                        <div className="empty-chart">No location data available.</div>
+                      ) : (
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={normalizedLocationData}
+                              dataKey="count"
+                              nameKey="label"
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={66}
+                              outerRadius={100}
+                              paddingAngle={2}
+                              stroke={darkMode ? "#071923" : "#ffffff"}
+                              strokeWidth={3}
+                            >
+                              {normalizedLocationData.map((entry, index) => (
+                                <Cell
+                                  key={`location-${index}`}
+                                  fill={chartColors[index % chartColors.length]}
+                                />
+                              ))}
+                            </Pie>
 
-                  <div className="chart-area">
+                            <Tooltip
+                              formatter={(value, name) => [
+                                `${value} Jobs`,
+                                name
+                              ]}
+                              contentStyle={{
+                                background: darkMode ? "#0b1d28" : "#ffffff",
+                                border: darkMode
+                                  ? "1px solid #21404d"
+                                  : "1px solid #dce7ea",
+                                borderRadius: "12px",
+                                boxShadow: "0 12px 30px rgba(15,23,42,.14)"
+                              }}
+                            />
+                          </PieChart>
+                        </ResponsiveContainer>
+                      )}
 
-                    <ResponsiveContainer>
+                      {normalizedLocationData.length > 0 && (
+                        <div className="donut-center-label">
+                          <strong>{totalLocationJobs}</strong>
+                          <span>Total Jobs</span>
+                        </div>
+                      )}
+                    </div>
 
-                      <BarChart
-                        data={locationData}
-                      >
+                    <div className="location-legend">
+                      {normalizedLocationData.map((item, index) => {
+                        const percent = totalLocationJobs
+                          ? Math.round((item.count / totalLocationJobs) * 100)
+                          : 0;
 
-                        <CartesianGrid
-                          strokeDasharray="3 3"
-                          stroke="#27324a"
-                        />
+                        return (
+                          <div className="location-legend-row" key={`legend-${index}`}>
+                            <div className="location-legend-name">
+                              <span
+                                className="location-dot"
+                                style={{
+                                  background: chartColors[index % chartColors.length]
+                                }}
+                              />
+                              <span>{item.label}</span>
+                            </div>
 
-                        <XAxis
-                          dataKey="location"
-                          stroke="#8993aa"
-                        />
+                            <div className="location-legend-value">
+                              <strong>{item.count}</strong>
+                              <span>{percent}%</span>
+                            </div>
 
-                        <YAxis
-                          stroke="#8993aa"
-                        />
-
-                        <Tooltip />
-
-                        <Bar
-                          dataKey="count"
-                          fill="#8b5cf6"
-                          radius={[5, 5, 0, 0]}
-                        />
-
-                      </BarChart>
-
-                    </ResponsiveContainer>
-
+                            <div className="location-progress">
+                              <span
+                                style={{
+                                  width: `${percent}%`,
+                                  background: chartColors[index % chartColors.length]
+                                }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-
                 </div>
 
               </div>
 
-
-              {/* TOP WORKERS */}
-
-              <div className="table-card">
-
-                <div className="table-heading">
-
+              {/* RECENT SERVICE REQUESTS */}
+              <div className="dashboard-request-card table-card">
+                <div className="table-heading dashboard-request-heading">
                   <div>
-
-                    <h3>
-                      ⭐ Top Performing Workers
-                    </h3>
-
-                    <p>
-                      Highest rated service workers
-                    </p>
-
+                    <h3>📋 Recent Service Requests</h3>
+                    <p>Latest citizen requests across JeevanSetu.</p>
                   </div>
-
+                  <button
+                    type="button"
+                    className="dashboard-view-all"
+                    onClick={() => goToSection("jobs")}
+                  >
+                    View All →
+                  </button>
                 </div>
-
 
                 <div className="table-wrapper">
-
                   <table>
-
                     <thead>
-
                       <tr>
-
-                        <th>
-                          Worker
-                        </th>
-
-                        <th>
-                          Skill
-                        </th>
-
-                        <th>
-                          Rating
-                        </th>
-
-                        <th>
-                          Experience
-                        </th>
-
+                        <th>ID</th>
+                        <th>Citizen</th>
+                        <th>Service</th>
+                        <th>Worker</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Date</th>
                       </tr>
-
                     </thead>
-
-
                     <tbody>
-
-                      {topWorkers.length === 0 ? (
-
+                      {jobs.length === 0 ? (
                         <tr>
-
-                          <td
-                            colSpan="4"
-                            className="empty-cell"
-                          >
-                            No worker data available.
+                          <td colSpan="7" className="empty-cell">
+                            No service requests found.
                           </td>
-
                         </tr>
-
                       ) : (
-
-                        topWorkers.map(
-                          (worker, index) => (
-
-                            <tr
-                              key={
-                                worker.id ||
-                                index
-                              }
-                            >
-
-                              <td>
-                                <strong>
-                                  {
-                                    worker.name ||
-                                    worker.worker_name ||
-                                    "Unknown"
-                                  }
-                                </strong>
-                              </td>
-
-                              <td>
-                                {
-                                  worker.skill ||
-                                  "N/A"
-                                }
-                              </td>
-
-                              <td>
-                                ⭐ {
-                                  worker.rating ??
-                                  0
-                                }
-                              </td>
-
-                              <td>
-                                {
-                                  worker.experience ??
-                                  0
-                                } years
-                              </td>
-
-                            </tr>
-
-                          )
-                        )
-
+                        jobs.slice(0, 5).map((job) => (
+                          <tr key={job.id}>
+                            <td><strong>#{job.id}</strong></td>
+                            <td>{job.citizen || job.citizen_name || "N/A"}</td>
+                            <td>{job.service || "N/A"}</td>
+                            <td>{job.worker || job.worker_name || "Not assigned"}</td>
+                            <td>{job.location || "N/A"}</td>
+                            <td>
+                              <span className={getStatusClass(job.status)}>
+                                {formatStatus(job.status)}
+                              </span>
+                            </td>
+                            <td>{formatDate(job.created_at)}</td>
+                          </tr>
+                        ))
                       )}
-
                     </tbody>
-
                   </table>
+                </div>
+              </div>
 
+              {/* TOP WORKERS */}
+              <div className="table-card top-workers-dashboard-card">
+                <div className="table-heading">
+                  <div>
+                    <h3>⭐ Top Performing Workers</h3>
+                    <p>Highest rated service workers</p>
+                  </div>
+                  <button
+                    type="button"
+                    className="dashboard-view-all"
+                    onClick={() => goToSection("workers")}
+                  >
+                    View All →
+                  </button>
                 </div>
 
+                <div className="table-wrapper">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Worker</th>
+                        <th>Skill</th>
+                        <th>Location</th>
+                        <th>Experience</th>
+                        <th>Rating</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {topWorkers.length === 0 ? (
+                        <tr>
+                          <td colSpan="8" className="empty-cell">
+                            No worker data available.
+                          </td>
+                        </tr>
+                      ) : (
+                        topWorkers.slice(0, 5).map((worker, index) => (
+                          <tr key={worker.id || index}>
+                            <td><strong>{index + 1}</strong></td>
+                            <td>
+                              <div className="dashboard-worker-name">
+                                <span className="dashboard-worker-avatar">
+                                  {(worker.name || worker.worker_name || "W").charAt(0).toUpperCase()}
+                                </span>
+                                <div>
+                                  <strong>{worker.name || worker.worker_name || "Unknown"}</strong>
+                                  <small>{worker.email || ""}</small>
+                                </div>
+                              </div>
+                            </td>
+                            <td><span className="skill-pill">{worker.skill || "N/A"}</span></td>
+                            <td>{worker.location || "N/A"}</td>
+                            <td>{worker.experience ?? 0} years</td>
+                            <td>⭐ {worker.rating ?? 0}</td>
+                            <td>
+                              <span className={isWorkerVerified(worker) ? "status-success" : "status-pending"}>
+                                {isWorkerVerified(worker) ? "Verified" : "Pending"}
+                              </span>
+                            </td>
+                            <td>
+                              <button
+                                type="button"
+                                className="primary-button small-button"
+                                onClick={() => {
+                                  const fullWorker = workers.find((w) => w.id === worker.id) || worker;
+                                  openWorker(fullWorker);
+                                }}
+                              >
+                                Manage
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
             </section>
@@ -1289,7 +1502,7 @@ function GovernmentDashboard() {
                 </div>
 
                 <div className="section-count">
-                  {workers.length} workers
+                  {filteredWorkers.length} workers
                 </div>
 
               </div>
@@ -1417,7 +1630,7 @@ function GovernmentDashboard() {
 
                       ) : (
 
-                        workers.map(
+                        filteredWorkers.map(
                           (worker) => (
 
                             <tr
@@ -1481,14 +1694,14 @@ function GovernmentDashboard() {
 
                                 <span
                                   className={
-                                    worker.verified
+                                    isWorkerVerified(worker)
                                       ? "status-success"
                                       : "status-pending"
                                   }
                                 >
 
                                   {
-                                    worker.verified
+                                    isWorkerVerified(worker)
                                       ? "Verified"
                                       : "Pending"
                                   }
@@ -2072,7 +2285,7 @@ function GovernmentDashboard() {
                     </h3>
 
                     <p>
-                      Government support and resolution center
+                      Supervisor support and resolution center
                     </p>
 
                   </div>
@@ -2649,7 +2862,7 @@ function GovernmentDashboard() {
 
                   <strong>
                     {
-                      selectedWorker.verified
+                      isWorkerVerified(selectedWorker)
                         ? "✅ Verified"
                         : "⏳ Pending"
                     }
@@ -2678,30 +2891,26 @@ function GovernmentDashboard() {
 
               <div className="modal-actions">
 
-                {selectedWorker.verified ? (
+                {isWorkerVerified(selectedWorker) ? (
 
                   <button
-                    className="secondary-button"
-                    onClick={() =>
-                      unverifyWorker(
-                        selectedWorker.id
-                      )
-                    }
+                    type="button"
+                    className="unverify-btn modal-verify-action"
+                    disabled={verificationLoading}
+                    onClick={() => unverifyWorker(selectedWorker.id)}
                   >
-                    Remove Verification
+                    {verificationLoading ? "Updating..." : "↩ Unverify Worker"}
                   </button>
 
                 ) : (
 
                   <button
-                    className="primary-button"
-                    onClick={() =>
-                      verifyWorker(
-                        selectedWorker.id
-                      )
-                    }
+                    type="button"
+                    className="verify-btn modal-verify-action"
+                    disabled={verificationLoading}
+                    onClick={() => verifyWorker(selectedWorker.id)}
                   >
-                    ✅ Verify Worker
+                    {verificationLoading ? "Verifying..." : "✓ Verify Worker"}
                   </button>
 
                 )}
@@ -2900,12 +3109,12 @@ function GovernmentDashboard() {
               <div className="response-box">
 
                 <label>
-                  Government Response / Resolution Note
+                  Supervisor Response / Resolution Note
                 </label>
 
                 <textarea
                   rows="5"
-                  placeholder="Enter government response..."
+                  placeholder="Enter supervisor response..."
                   value={complaintNote}
                   onChange={(e) =>
                     setComplaintNote(
@@ -2997,4 +3206,4 @@ function GovernmentDashboard() {
 }
 
 
-export default GovernmentDashboard;
+export default SupervisorDashboard;
